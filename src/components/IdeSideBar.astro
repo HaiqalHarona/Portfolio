@@ -1,0 +1,357 @@
+---
+// src/components/IdeSideBar.astro
+import { pb } from "../lib/pocketbase";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+// A simple helper function to check which "file" is active
+const isActive = (path: string) => currentPath === path;
+
+let projects: any[] = [];
+try {
+  projects = await pb.collection("projects").getFullList({
+    sort: "-is_featured,title",
+  });
+} catch (e) {
+  console.error("Failed to query projects for IdeSideBar:", e);
+}
+
+const forFunProjects = projects.filter((p) => p.project_type === "forfun");
+const personalProjects = projects.filter((p) => p.project_type === "personal");
+const schoolProjects = projects.filter((p) => p.project_type === "school");
+
+const getFileDetails = (project: any) => {
+  let ext = ".json";
+  let icon = "{}";
+  let color = "text-cyan-400 font-sans";
+
+  if (project.tech_stack) {
+    let stack = [];
+    try {
+      stack = Array.isArray(project.tech_stack)
+        ? project.tech_stack
+        : JSON.parse(project.tech_stack);
+    } catch (err) {
+      if (typeof project.tech_stack === 'string') {
+        try {
+          stack = JSON.parse(project.tech_stack.replace(/'/g, '"'));
+        } catch {
+          stack = [project.tech_stack];
+        }
+      }
+    }
+    const stackLower = stack.map((t: any) => String(t).toLowerCase());
+    if (stackLower.includes("rust") || stackLower.includes("rs")) {
+      ext = ".rs";
+      icon = "🦀";
+      color = "text-orange-600";
+    } else if (stackLower.includes("typescript") || stackLower.includes("ts")) {
+      ext = ".ts";
+      icon = "TS";
+      color = "text-blue-500 font-sans text-xs font-bold";
+    } else if (stackLower.includes("javascript") || stackLower.includes("js")) {
+      ext = ".js";
+      icon = "JS";
+      color = "text-yellow-500 font-sans text-xs font-bold";
+    } else if (stackLower.includes("python") || stackLower.includes("py")) {
+      ext = ".py";
+      icon = "🐍";
+      color = "text-blue-400";
+    } else if (stackLower.includes("go") || stackLower.includes("golang")) {
+      ext = ".go";
+      icon = "🐹";
+      color = "text-cyan-500";
+    } else if (stackLower.includes("c++") || stackLower.includes("cpp")) {
+      ext = ".cpp";
+      icon = "C++";
+      color = "text-blue-600 font-sans text-xs font-bold";
+    }
+  }
+
+  return { ext, icon, color };
+};
+
+const getActiveLanguage = () => {
+  if (currentPath === '/') return 'Astro';
+  if (currentPath === '/projects') return 'JSON';
+  if (currentPath === '/stack') return 'YAML';
+  if (currentPath === '/cv') return 'Markdown';
+  if (currentPath === '/contact') return 'Shell Script';
+  if (currentPath.startsWith('/projects/')) {
+    const activeProj = projects.find(p => `/projects/${p.id}` === currentPath);
+    if (activeProj) {
+      const { ext } = getFileDetails(activeProj);
+      if (ext === '.rs') return 'Rust';
+      if (ext === '.ts') return 'TypeScript';
+      if (ext === '.js') return 'JavaScript';
+      if (ext === '.py') return 'Python';
+      if (ext === '.go') return 'Go';
+      if (ext === '.cpp') return 'C++';
+    }
+    return 'JSON';
+  }
+  return 'Plain Text';
+};
+---
+
+<aside class="w-64 min-h-screen bg-base-100 border-r border-neutral font-mono text-sm flex flex-col justify-between text-base-content/80">
+  
+  <div class="flex-grow flex flex-col">
+    <div class="p-4 text-xs font-bold opacity-60 tracking-widest uppercase flex justify-between items-center">
+      <span>Explorer</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-60 cursor-pointer hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+      </svg>
+    </div>
+
+    <div class="px-2 select-none flex-grow">
+      <!-- Workspace Root -->
+      <div class="flex items-center px-2 py-1 mb-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-70 transform rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="font-bold tracking-tight text-base-content text-xs">HAIQAL-PORTFOLIO</span>
+      </div>
+
+      <!-- Tree Contents -->
+      <div class="pl-2 ml-3 border-l border-neutral/30 flex flex-col space-y-0.5">
+        
+        <!-- index.astro (Home) -->
+        <a href="/" class={`file-link flex items-center px-2 py-1 rounded transition-colors ${isActive('/') ? 'bg-neutral text-primary font-bold' : 'hover:bg-neutral/50 hover:text-base-content'}`}>
+          <span class={`file-icon-container mr-2 inline-block text-orange-500 font-bold font-sans text-xs ${isActive('/') ? 'active-file-icon' : ''}`}>{"{ }"}</span> 
+          <span>index.astro</span>
+        </a>
+
+        <!-- projects/ (Collapsible Directory) -->
+        <details class="group" open>
+          <summary class="flex items-center px-2 py-1 text-base-content/75 hover:bg-neutral/30 rounded cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1.5 opacity-70 transition-transform chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="mr-1.5 group-open:hidden text-amber-500">📁</span>
+            <span class="mr-1.5 hidden group-open:inline text-amber-500">📂</span>
+            <span class="font-semibold text-base-content">projects</span>
+          </summary>
+
+          <!-- projects/ children -->
+          <div class="pl-3 ml-2 border-l border-neutral/30 flex flex-col space-y-0.5 mt-0.5">
+            
+            <!-- projects/personal/ (Collapsible Directory) -->
+            <details class="group" open>
+              <summary class="flex items-center px-2 py-1 text-base-content/75 hover:bg-neutral/30 rounded cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1.5 opacity-70 transition-transform chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span class="mr-1.5 group-open:hidden text-amber-500">📁</span>
+                <span class="mr-1.5 hidden group-open:inline text-amber-500">📂</span>
+                <span>personal</span>
+              </summary>
+
+              <!-- projects/personal/ children -->
+              <div class="pl-3 ml-2 border-l border-neutral/30 flex flex-col space-y-0.5 mt-0.5">
+                
+                <!-- projects/personal/for-fun/ (Collapsible Directory) -->
+                <details class="group" open>
+                  <summary class="flex items-center px-2 py-1 text-base-content/75 hover:bg-neutral/30 rounded cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1.5 opacity-70 transition-transform chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                    <span class="mr-1.5 group-open:hidden text-amber-500">📁</span>
+                    <span class="mr-1.5 hidden group-open:inline text-amber-500">📂</span>
+                    <span>for-fun</span>
+                  </summary>
+
+                  <!-- projects/personal/for-fun/ children -->
+                  <div class="pl-3 ml-2 border-l border-neutral/30 flex flex-col space-y-0.5 mt-0.5">
+                    {forFunProjects.map((project) => {
+                      const { ext, icon, color } = getFileDetails(project);
+                      const pSlug = project.title.toLowerCase().replace(/\s+/g, '-');
+                      const pPath = `/projects/${project.id}`;
+                      return (
+                        <a href={pPath} class={`file-link flex items-center px-2 py-1 rounded transition-colors ${isActive(pPath) ? 'bg-neutral text-primary font-bold' : 'hover:bg-neutral/50 hover:text-base-content'}`}>
+                          <span class={`file-icon-container mr-2 inline-block ${color} ${isActive(pPath) ? 'active-file-icon' : ''}`}>{icon}</span>
+                          <span>{pSlug}{ext}</span>
+                        </a>
+                      );
+                    })}
+                  </div>
+                </details>
+
+                <!-- personal projects -->
+                {personalProjects.map((project) => {
+                  const { ext, icon, color } = getFileDetails(project);
+                  const pSlug = project.title.toLowerCase().replace(/\s+/g, '-');
+                  const pPath = `/projects/${project.id}`;
+                  return (
+                    <a href={pPath} class={`file-link flex items-center px-2 py-1 rounded transition-colors ${isActive(pPath) ? 'bg-neutral text-primary font-bold' : 'hover:bg-neutral/50 hover:text-base-content'}`}>
+                      <span class={`file-icon-container mr-2 inline-block ${color} ${isActive(pPath) ? 'active-file-icon' : ''}`}>{icon}</span>
+                      <span>{pSlug}{ext}</span>
+                    </a>
+                  );
+                })}
+
+              </div>
+            </details>
+
+            <!-- projects/school/ (Collapsible Directory) -->
+            <details class="group" open>
+              <summary class="flex items-center px-2 py-1 text-base-content/75 hover:bg-neutral/30 rounded cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1.5 opacity-70 transition-transform chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+                <span class="mr-1.5 group-open:hidden text-amber-500">📁</span>
+                <span class="mr-1.5 hidden group-open:inline text-amber-500">📂</span>
+                <span>school</span>
+              </summary>
+
+              <!-- projects/school/ children -->
+              <div class="pl-3 ml-2 border-l border-neutral/30 flex flex-col space-y-0.5 mt-0.5">
+                {schoolProjects.map((project) => {
+                  const { ext, icon, color } = getFileDetails(project);
+                  const pSlug = project.title.toLowerCase().replace(/\s+/g, '-');
+                  const pPath = `/projects/${project.id}`;
+                  return (
+                    <a href={pPath} class={`file-link flex items-center px-2 py-1 rounded transition-colors ${isActive(pPath) ? 'bg-neutral text-primary font-bold' : 'hover:bg-neutral/50 hover:text-base-content'}`}>
+                      <span class={`file-icon-container mr-2 inline-block ${color} ${isActive(pPath) ? 'active-file-icon' : ''}`}>{icon}</span>
+                      <span>{pSlug}{ext}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </details>
+
+            <!-- projects.json (Overview page link) -->
+            <a href="/projects" class={`file-link flex items-center px-2 py-1 rounded transition-colors ${isActive('/projects') ? 'bg-neutral text-primary font-bold' : 'hover:bg-neutral/50 hover:text-base-content'}`}>
+              <span class={`file-icon-container mr-2 inline-block text-cyan-400 font-bold font-sans text-xs ${isActive('/projects') ? 'active-file-icon' : ''}`}>{"{}"}</span> 
+              <span>projects.json</span>
+            </a>
+
+          </div>
+        </details>
+
+        <!-- docker-compose.yml (Stack) -->
+        <a href="/stack" class={`file-link flex items-center px-2 py-1 rounded transition-colors ${isActive('/stack') ? 'bg-neutral text-primary font-bold' : 'hover:bg-neutral/50 hover:text-base-content'}`}>
+          <span class={`file-icon-container mr-2 inline-block text-sky-500 text-xs ${isActive('/stack') ? 'active-file-icon' : ''}`}>🐳</span> 
+          <span>docker-compose.yml</span>
+        </a>
+
+        <!-- cv.md (CV) -->
+        <a href="/cv" class={`file-link flex items-center px-2 py-1 rounded transition-colors ${isActive('/cv') ? 'bg-neutral text-primary font-bold' : 'hover:bg-neutral/50 hover:text-base-content'}`}>
+          <span class={`file-icon-container mr-2 inline-block text-teal-500 text-xs font-sans ${isActive('/cv') ? 'active-file-icon' : ''}`}>M↓</span> 
+          <span>cv.md</span>
+        </a>
+
+        <!-- ping.sh (Contact) -->
+        <a href="/contact" class={`file-link flex items-center px-2 py-1 rounded transition-colors ${isActive('/contact') ? 'bg-neutral text-primary font-bold' : 'hover:bg-neutral hover:text-base-content'}`}>
+          <span class={`file-icon-container mr-2 inline-block text-lime-500 text-xs font-bold font-sans ${isActive('/contact') ? 'active-file-icon' : ''}`}>>_</span> 
+          <span>ping.sh</span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- VS Code Style Status Bar -->
+  <div class="mt-auto bg-[#007acc] text-white text-[13px] px-3 flex items-center justify-between h-6 select-none font-sans border-t border-blue-700/30 w-full shrink-0">
+    <!-- Left Section -->
+    <div class="flex items-center space-x-3 h-full">
+      <!-- Remote Host Indicator replaced with current file language -->
+      <div class="bg-[#1f8ad2] hover:bg-[#259bdf] px-2 flex items-center h-full cursor-pointer font-normal -ml-3">
+        <span class="mr-1 text-xs font-normal"><></span> {getActiveLanguage()}
+      </div>
+      
+      <!-- Git Branch -->
+      <span class="flex items-center gap-1 cursor-pointer hover:bg-blue-600/50 px-1.5 py-0.5 rounded font-normal">
+        <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M11.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm-2.25.75a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a.5.5 0 0 0-.5.5v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.628A1.5 1.5 0 0 1 6 7h4A1 1 0 0 0 11 6V5.372a2.25 2.25 0 0 1-1.5-2.122zm-5 6.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm0-7a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5z"/>
+        </svg>
+        master
+      </span>
+
+      <!-- Sync Icon -->
+      <span class="cursor-pointer hover:bg-blue-600/50 p-0.5 rounded flex items-center justify-center sync-icon">
+        <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+          <path d="M8 4.414l1.646-1.647a.5.5 0 0 1 .708 0l1.646 1.647a.5.5 0 0 1-.708.708L9.5 3.586V7.5a.5.5 0 0 1-1 0V3.586L6.854 5.228a.5.5 0 0 1-.708-.708L7.293 3.5a.5.5 0 0 1 .707 0z"/>
+        </svg>
+      </span>
+
+      <!-- Problems -->
+      <div class="flex items-center space-x-2 font-normal">
+        <span class="flex items-center gap-1 hover:bg-blue-600/50 px-1.5 py-0.5 rounded cursor-pointer text-white font-normal">
+          <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+          </svg>
+          0
+        </span>
+        <span class="flex items-center gap-1 hover:bg-blue-600/50 px-1.5 py-0.5 rounded cursor-pointer text-white font-normal">
+          <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M8.865 1.52c-.18-.317-.51-.52-.865-.52s-.685.203-.865.52L.18 13.982C.006 14.288-.04 14.65.05 14.992c.09.34.302.628.59.808C.887 15.95 1.187 16 1.487 16h13.026c.3 0 .6-.05.847-.2.288-.18.5-.468.59-.808.09-.342.044-.704-.13-1.01L8.865 1.52zM8 2c.12 0 .227.067.287.172l6.82 12.462c.057.102.042.222-.014.304-.056.082-.143.162-.243.162H1.15c-.1 0-.187-.08-.243-.162-.056-.082-.07-.202-.014-.304L7.713 2.172C7.773 2.067 7.88 2 8 2z"/>
+            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
+          </svg>
+          0
+        </span>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="flex items-center space-x-2 opacity-90 pr-1 font-normal">
+      <span class="hover:bg-blue-600/50 px-1.5 py-0.5 rounded cursor-pointer font-normal text-xs">
+        Ln 1, Col 1
+      </span>
+    </div>
+  </div>
+</aside>
+
+<style>
+  /* Hide scrollbar for the sidebar */
+  aside,
+  aside * {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  aside::-webkit-scrollbar,
+  aside *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+
+  details[open] > summary svg.chevron {
+    transform: rotate(90deg);
+  }
+
+  .file-link:hover .file-icon-container {
+    transform: scale(1.2) rotate(15deg);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .file-icon-container {
+    transition: transform 0.2s ease;
+  }
+
+  @keyframes icon-open-rotate {
+    0% {
+      transform: scale(0.8) rotate(-180deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+    }
+  }
+
+  .active-file-icon {
+    animation: icon-open-rotate 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes spin-sync {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+  }
+
+  .sync-icon:hover svg {
+    animation: spin-sync 1.2s linear infinite;
+  }
+</style>

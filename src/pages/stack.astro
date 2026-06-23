@@ -1,0 +1,87 @@
+---
+// src/pages/stack.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout sideBarActiveItemID="stack" currentPath="/stack">
+  <div class="max-w-4xl">
+    <div class="mb-8">
+      <h1 class="text-4xl font-bold text-primary mb-2">docker-compose.yml</h1>
+      <p class="text-lg opacity-80">My production homelab and infrastructure stack.</p>
+    </div>
+
+    <!-- The Philosophy -->
+    <div class="bg-neutral/50 border border-neutral p-6 rounded-lg mb-10 text-sm">
+      <h3 class="text-secondary font-bold mb-2">// Resource-Constrained Engineering</h3>
+      <p class="opacity-80">
+        I built my production environment using repurposed thin clients, asymmetric memory arrays, and salvaged drives. Running a modern backend stack on this hardware forces me to deeply understand container lifecycle management, optimize database queries for strict resource limits, and handle asynchronous storage bottlenecks. I don't just deploy containers; I engineer them to run efficiently anywhere.
+      </p>
+    </div>
+
+    <!-- Node 01: Networking Server -->
+    <h2 class="text-2xl font-bold mb-4 flex items-center">
+      <span class="text-accent mr-2">node_01</span> <span class="opacity-50 text-lg font-normal">:: Gateway & Networking</span>
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div class="card bg-base-200 border border-neutral shadow-xl">
+        <div class="card-body p-6">
+          <ul class="font-mono text-sm space-y-2 opacity-90">
+            <li><span class="text-secondary">OS:</span> Ubuntu 24.04.4 LTS</li>
+            <li><span class="text-secondary">Chassis:</span> HP Thin Client</li>
+            <li><span class="text-secondary">CPU:</span> AMD GX-420GI (2C/4T @ 2.0GHz)</li>
+            <li><span class="text-secondary">RAM:</span> 20GB DDR4 (Asymmetric 1866MHz)</li>
+            <li><span class="text-secondary">Storage:</span> 128GB SATA SSD</li>
+            <li><span class="text-secondary">Role:</span> Reverse Proxy, Tunnels, DNS, Deployment Containers</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Add your HP Dashdot screenshot here -->
+      <div class="rounded-xl overflow-hidden border border-neutral">
+        <img src="/dashdot-hp.jpg" alt="HP Thin Client Dashdot Monitoring" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
+      </div>
+    </div>
+
+    <!-- Node 02: Backend Server -->
+    <h2 class="text-2xl font-bold mb-4 flex items-center">
+      <span class="text-info mr-2">node_02</span> <span class="opacity-50 text-lg font-normal">:: Database & Compute</span>
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div class="card bg-base-200 border border-neutral shadow-xl">
+        <div class="card-body p-6">
+          <ul class="font-mono text-sm space-y-2 opacity-90">
+            <li><span class="text-secondary">OS:</span> Ubuntu 24.04.4 LTS</li>
+            <li><span class="text-secondary">Chassis:</span> Lenovo ThinkCentre M710 SFF</li>
+            <li><span class="text-secondary">CPU:</span> Intel Core i5-8500 (6C/6T @ 4.1GHz)</li>
+            <li><span class="text-secondary">RAM:</span> 16GB DDR4 (2400MHz)</li>
+            <li><span class="text-secondary">Storage:</span> 500GB SSD + 1TB Toshiba HDD</li>
+            <li><span class="text-secondary">Role:</span> PocketBase, Portainer, MYSQL, POSTGRESQL, MONGO</li>
+          </ul>
+        </div>
+      </div>
+      <!-- Add your Lenovo Dashdot screenshot here -->
+      <div class="rounded-xl overflow-hidden border border-neutral">
+        <img src="/dashdot-lenovo.jpg" alt="Lenovo ThinkCentre Dashdot Monitoring" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
+      </div>
+    </div>
+
+    <!-- Docker Compose Snippet -->
+    <h2 class="text-2xl font-bold mb-4 mt-12">Core Architecture Stack</h2>
+    <div class="mockup-code bg-neutral text-neutral-content">
+      <pre data-prefix="1" class="text-secondary"><code>version: '3.8'</code></pre>
+      <pre data-prefix="2"><code></code></pre>
+      <pre data-prefix="3"><code>services:</code></pre>
+      <pre data-prefix="4" class="text-primary"><code>  pocketbase:</code></pre>
+      <pre data-prefix="5"><code>    image: ghcr.io/muchobien/pocketbase:latest</code></pre>
+      <pre data-prefix="6"><code>    container_name: core_database</code></pre>
+      <pre data-prefix="7"><code>    restart: unless-stopped</code></pre>
+      <pre data-prefix="8"><code>    ports:</code></pre>
+      <pre data-prefix="9"><code>      - "8090:8090"</code></pre>
+      <pre data-prefix="10"><code>    volumes:</code></pre>
+      <pre data-prefix="11"><code>      <span class="opacity-50"># Fast internal SSD for core DB</span></code></pre>
+      <pre data-prefix="12"><code>      - /opt/pb_data:/pb_data</code></pre>
+      <pre data-prefix="13"><code>      <span class="opacity-50"># External HDD array for mass media storage</span></code></pre>
+      <pre data-prefix="14"><code>      - /mnt/external_hdd/pb_public:/pb_public</code></pre>
+    </div>
+
+  </div>
+</BaseLayout>

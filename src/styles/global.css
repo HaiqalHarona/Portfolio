@@ -1,3 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Space+Mono:wght@400;700&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+/* Apply base sans-serif font to the body */
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Apply Space Mono (Terminal/Code font) to all headings */
+h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: 'Space Mono', monospace;
+    letter-spacing: -0.02em;
+}
+
+/* Apply Ubuntu Mono to the sidebar IDE component */
+aside, aside * {
+    font-family: 'Ubuntu Mono', monospace !important;
+}
+
+/* Apply JetBrains Mono to code elements, buttons, badges, timelines and mono utilities */
+code, pre, kbd, samp, .font-mono, .btn, .badge, .time-line-container {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Fix timeline style line display */
 .time-line-container>div:last-child .education__time>.education__line {
     display: none;
+}
+
+/* Hide scrollbars globally across the entire website (html, body, sidebar, drawer panels) */
+html, body, aside, .drawer, .drawer-side, .drawer-content,
+html *, body *, aside *, .drawer *, .drawer-side *, .drawer-content * {
+    -ms-overflow-style: none !important;
+    scrollbar-width: none !important;
+}
+html::-webkit-scrollbar, body::-webkit-scrollbar, aside::-webkit-scrollbar,
+.drawer::-webkit-scrollbar, .drawer-side::-webkit-scrollbar, .drawer-content::-webkit-scrollbar,
+html *::-webkit-scrollbar, body *::-webkit-scrollbar, aside *::-webkit-scrollbar,
+.drawer *::-webkit-scrollbar, .drawer-side *::-webkit-scrollbar, .drawer-content *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }

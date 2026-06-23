@@ -1,0 +1,202 @@
+[
+  {
+    "id": "projects_collection123",
+    "name": "projects",
+    "type": "base",
+    "system": false,
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "fields": [
+      {
+        "autogeneratePattern": "[a-z0-9]{15}",
+        "hidden": false,
+        "id": "text3208210256",
+        "max": 15,
+        "min": 15,
+        "name": "id",
+        "pattern": "^[a-z0-9]+$",
+        "presentable": false,
+        "primaryKey": true,
+        "required": true,
+        "system": true,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "field_title123",
+        "max": 0,
+        "min": 0,
+        "name": "title",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "field_projtype",
+        "maxSelect": 1,
+        "name": "project_type",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "select",
+        "values": [
+          "personal",
+          "forfun",
+          "school"
+        ]
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "field_desc1234",
+        "max": 0,
+        "min": 0,
+        "name": "description",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "field_timeline",
+        "max": 0,
+        "min": 0,
+        "name": "timeline",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "field_techstack",
+        "maxSize": 2000000,
+        "name": "tech_stack",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "json"
+      },
+      {
+        "hidden": false,
+        "id": "field_featured",
+        "name": "is_featured",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "bool"
+      },
+      {
+        "hidden": false,
+        "id": "field_coverimg",
+        "maxSelect": 1,
+        "maxSize": 5242880,
+        "mimeTypes": [
+          "image/jpeg",
+          "image/png",
+          "image/svg+xml",
+          "image/gif",
+          "image/webp"
+        ],
+        "name": "cover_image",
+        "presentable": false,
+        "primaryKey": false,
+        "protected": false,
+        "required": false,
+        "system": false,
+        "thumbs": [
+          "300x0"
+        ],
+        "type": "file"
+      },
+      {
+        "hidden": false,
+        "id": "field_videos12",
+        "maxSelect": 3,
+        "maxSize": 104857600,
+        "mimeTypes": [
+          "video/mp4",
+          "video/webm"
+        ],
+        "name": "videos",
+        "presentable": false,
+        "primaryKey": false,
+        "protected": false,
+        "required": false,
+        "system": false,
+        "thumbs": [],
+        "type": "file"
+      },
+      {
+        "hidden": false,
+        "id": "field_longvideo",
+        "maxSelect": 1,
+        "maxSize": 524288000,
+        "mimeTypes": [
+          "video/mp4",
+          "video/webm"
+        ],
+        "name": "long_form_video",
+        "presentable": false,
+        "primaryKey": false,
+        "protected": false,
+        "required": false,
+        "system": false,
+        "thumbs": [],
+        "type": "file"
+      },
+      {
+        "exceptDomains": [],
+        "hidden": false,
+        "id": "field_github",
+        "name": "github_link",
+        "onlyDomains": [],
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "url"
+      },
+      {
+        "exceptDomains": [],
+        "hidden": false,
+        "id": "field_website",
+        "name": "website_link",
+        "onlyDomains": [],
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "url"
+      },
+      {
+        "hidden": false,
+        "id": "field_links123",
+        "maxSize": 2000000,
+        "name": "links",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "json"
+      }
+    ]
+  }
+]
