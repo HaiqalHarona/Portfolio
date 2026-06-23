@@ -4,7 +4,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout sideBarActiveItemID="stack" currentPath="/stack">
-  <div class="max-w-4xl">
+  <div class="max-w-4xl mx-auto px-4">
+    <!-- Page Header -->
     <div class="mb-8">
       <h1 class="text-4xl font-bold text-primary mb-2">docker-compose.yml</h1>
       <p class="text-lg opacity-80">My production homelab and infrastructure stack.</p>
@@ -18,70 +19,231 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </p>
     </div>
 
-    <!-- Node 01: Networking Server -->
+    <!-- Homarr Unified Portal -->
     <h2 class="text-2xl font-bold mb-4 flex items-center">
-      <span class="text-accent mr-2">node_01</span> <span class="opacity-50 text-lg font-normal">:: Gateway & Networking</span>
+      <span class="text-primary mr-2">portal</span> <span class="opacity-50 text-lg font-normal">:: Homarr Dashboard</span>
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div class="card bg-base-200 border border-neutral shadow-xl justify-center">
+        <div class="card-body p-6">
+          <h3 class="text-secondary font-bold mb-2 font-mono">// Unified Entrypoint Portal</h3>
+          <p class="text-sm opacity-95">
+            Homarr serves as the central entrypoint for the entire self-hosted stack. It provides quick navigation links, visual service status monitoring, and layout shortcuts to all hosted applications and admin tools.
+          </p>
+        </div>
+      </div>
+      <!-- Homarr Dashboard Image -->
+      <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2 flex flex-col justify-center">
+        <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Homarr dashboard image">
+          <img 
+            src="/images/compose/homarr.png" 
+            alt="Homarr Main Application Dashboard" 
+            class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform" 
+            data-zoom-src="/images/compose/homarr.png"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Node 01: Networking Server -->
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 flex-wrap">
+      <span class="badge badge-accent font-mono text-xs uppercase">Node 1</span>
+      <span class="text-accent font-bold">[SERVER_NAME]</span>
+      <span class="opacity-50 text-lg font-normal">:: Gateway & Networking</span>
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
       <div class="card bg-base-200 border border-neutral shadow-xl">
         <div class="card-body p-6">
           <ul class="font-mono text-sm space-y-2 opacity-90">
-            <li><span class="text-secondary">OS:</span> Ubuntu 24.04.4 LTS</li>
-            <li><span class="text-secondary">Chassis:</span> HP Thin Client</li>
-            <li><span class="text-secondary">CPU:</span> AMD GX-420GI (2C/4T @ 2.0GHz)</li>
-            <li><span class="text-secondary">RAM:</span> 20GB DDR4 (Asymmetric 1866MHz)</li>
-            <li><span class="text-secondary">Storage:</span> 128GB SATA SSD</li>
-            <li><span class="text-secondary">Role:</span> Reverse Proxy, Tunnels, DNS, Deployment Containers</li>
+            <li><span class="text-secondary font-bold">OS:</span> Ubuntu 24.04.4 LTS</li>
+            <li><span class="text-secondary font-bold">Chassis:</span> HP Thin Client</li>
+            <li><span class="text-secondary font-bold">CPU:</span> AMD GX-420GI (2C/4T @ 2.0GHz)</li>
+            <li><span class="text-secondary font-bold">RAM:</span> 20GB DDR4</li>
+            <li><span class="text-secondary font-bold">Storage:</span> 128GB SATA SSD</li>
+            <li><span class="text-secondary font-bold">Role:</span> Reverse Proxy, DNS Gateway, Deployment Containers</li>
           </ul>
         </div>
       </div>
-      <!-- Add your HP Dashdot screenshot here -->
-      <div class="rounded-xl overflow-hidden border border-neutral">
-        <img src="/dashdot-hp.jpg" alt="HP Thin Client Dashdot Monitoring" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
+      <!-- Node 1 Image -->
+      <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2 flex flex-col justify-center">
+        <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Node 1 monitoring image">
+          <img 
+            src="/images/compose/Node_1.png" 
+            alt="HP Thin Client Resource Monitor (Node_1)" 
+            class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform"
+            data-zoom-src="/images/compose/Node_1.png"
+          />
+        </div>
+        <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">HP Thin Client Dashdot Resource Monitor</p>
       </div>
     </div>
 
     <!-- Node 02: Backend Server -->
-    <h2 class="text-2xl font-bold mb-4 flex items-center">
-      <span class="text-info mr-2">node_02</span> <span class="opacity-50 text-lg font-normal">:: Database & Compute</span>
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 flex-wrap">
+      <span class="badge badge-info font-mono text-xs uppercase">Node 2</span>
+      <span class="text-info font-bold">[SERVER_NAME]</span>
+      <span class="opacity-50 text-lg font-normal">:: Database & Compute</span>
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
       <div class="card bg-base-200 border border-neutral shadow-xl">
         <div class="card-body p-6">
           <ul class="font-mono text-sm space-y-2 opacity-90">
-            <li><span class="text-secondary">OS:</span> Ubuntu 24.04.4 LTS</li>
-            <li><span class="text-secondary">Chassis:</span> Lenovo ThinkCentre M710 SFF</li>
-            <li><span class="text-secondary">CPU:</span> Intel Core i5-8500 (6C/6T @ 4.1GHz)</li>
-            <li><span class="text-secondary">RAM:</span> 16GB DDR4 (2400MHz)</li>
-            <li><span class="text-secondary">Storage:</span> 500GB SSD + 1TB Toshiba HDD</li>
-            <li><span class="text-secondary">Role:</span> PocketBase, Portainer, MYSQL, POSTGRESQL, MONGO</li>
+            <li><span class="text-secondary font-bold">OS:</span> Ubuntu 24.04.4 LTS</li>
+            <li><span class="text-secondary font-bold">Chassis:</span> Lenovo ThinkCentre M710 SFF</li>
+            <li><span class="text-secondary font-bold">CPU:</span> Intel Core i5-8500 (6C/6T @ 4.1GHz)</li>
+            <li><span class="text-secondary font-bold">RAM:</span> 16GB DDR4</li>
+            <li><span class="text-secondary font-bold">Storage:</span> 500GB SSD + 1TB Toshiba HDD</li>
+            <li><span class="text-secondary font-bold">Role:</span> PocketBase, Portainer, MySQL, PostgreSQL, MongoDB, Redis Caching</li>
           </ul>
         </div>
       </div>
-      <!-- Add your Lenovo Dashdot screenshot here -->
-      <div class="rounded-xl overflow-hidden border border-neutral">
-        <img src="/dashdot-lenovo.jpg" alt="Lenovo ThinkCentre Dashdot Monitoring" class="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity" />
+      <!-- Node 2 Images (Lenovo Dashdot + Database + Portainer Stack) -->
+      <div class="space-y-4">
+        <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2">
+          <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Node 2 monitoring image">
+            <img 
+              src="/images/compose/Node_2.png" 
+              alt="Lenovo ThinkCentre SFF Resource Monitor (Node_2)" 
+              class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform"
+              data-zoom-src="/images/compose/Node_2.png"
+            />
+          </div>
+          <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">Lenovo ThinkCentre Dashdot Resource Monitor</p>
+        </div>
+
+        <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2">
+          <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom database schema image">
+            <img 
+              src="/images/compose/database.png" 
+              alt="Database Administration Panel (PocketBase)" 
+              class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform"
+              data-zoom-src="/images/compose/database.png"
+            />
+          </div>
+          <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">PocketBase Database Console Schema</p>
+        </div>
+
+        <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2">
+          <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Portainer stack image">
+            <img 
+              src="/images/compose/portainer.png" 
+              alt="Portainer Docker Management Console" 
+              class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform"
+              data-zoom-src="/images/compose/portainer.png"
+            />
+          </div>
+          <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">Portainer Graphical Stack Manager</p>
+        </div>
       </div>
     </div>
 
-    <!-- Docker Compose Snippet -->
-    <h2 class="text-2xl font-bold mb-4 mt-12">Core Architecture Stack</h2>
-    <div class="mockup-code bg-neutral text-neutral-content">
-      <pre data-prefix="1" class="text-secondary"><code>version: '3.8'</code></pre>
-      <pre data-prefix="2"><code></code></pre>
-      <pre data-prefix="3"><code>services:</code></pre>
-      <pre data-prefix="4" class="text-primary"><code>  pocketbase:</code></pre>
-      <pre data-prefix="5"><code>    image: ghcr.io/muchobien/pocketbase:latest</code></pre>
-      <pre data-prefix="6"><code>    container_name: core_database</code></pre>
-      <pre data-prefix="7"><code>    restart: unless-stopped</code></pre>
-      <pre data-prefix="8"><code>    ports:</code></pre>
-      <pre data-prefix="9"><code>      - "8090:8090"</code></pre>
-      <pre data-prefix="10"><code>    volumes:</code></pre>
-      <pre data-prefix="11"><code>      <span class="opacity-50"># Fast internal SSD for core DB</span></code></pre>
-      <pre data-prefix="12"><code>      - /opt/pb_data:/pb_data</code></pre>
-      <pre data-prefix="13"><code>      <span class="opacity-50"># External HDD array for mass media storage</span></code></pre>
-      <pre data-prefix="14"><code>      - /mnt/external_hdd/pb_public:/pb_public</code></pre>
+    <!-- Remote Development Section -->
+    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+      <span class="text-success mr-2">vpn</span> <span class="opacity-50 text-lg font-normal">:: Remote Development (from my laptop)</span>
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+      <div class="card bg-base-200 border border-neutral shadow-xl">
+        <div class="card-body p-6 justify-center">
+          <h3 class="text-secondary font-bold mb-3 font-mono">// Secure Overlay Mesh Networking</h3>
+          <p class="text-sm opacity-95 mb-4">
+            I use Tailscale to manage and access my home-hosted applications to configure and deploy remotely using limited permission accounts. It creates a secure encrypted mesh network that solves remote access without port forwarding.
+          </p>
+          <p class="text-sm opacity-95 mb-4">
+            Through Tailscale Share, I can securely invite friends directly to my staging environments for testing and review without exposing public endpoints.
+          </p>
+          <p class="text-sm opacity-95">
+            This VPN connection allows me to develop applications on my laptop without running a local database. I can directly connect to my private cloud-hosted database, eliminating database synchronization issues during production deployment.
+          </p>
+        </div>
+      </div>
+      <!-- Tailscale Image -->
+      <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2 flex flex-col justify-center">
+        <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Tailscale interface image">
+          <img 
+            src="/images/compose/tailscale.png" 
+            alt="Tailscale Mesh VPN Dashboard" 
+            class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform" 
+            data-zoom-src="/images/compose/tailscale.png"
+          />
+        </div>
+        <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">Tailscale Mesh VPN Overlay Interface</p>
+      </div>
     </div>
 
   </div>
+
+  <!-- Lightbox Modal -->
+  <div id="image-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4 cursor-zoom-out opacity-0 transition-opacity duration-300">
+    <div class="relative max-w-5xl max-h-[85vh] w-full h-full flex flex-col justify-center items-center">
+      <img id="lightbox-img" class="max-w-full max-h-[80vh] rounded shadow-2xl transition-transform duration-300 scale-95 object-contain" src="" alt="" />
+      <p id="lightbox-caption" class="text-white text-sm font-sans mt-3 text-center bg-black/60 px-4 py-1.5 rounded-full border border-white/10 font-mono"></p>
+    </div>
+  </div>
 </BaseLayout>
+
+<script>
+  // Changed from DOMContentLoaded to astro:page-load to support View Transitions
+  document.addEventListener('astro:page-load', () => {
+    const lightbox = document.getElementById('image-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const zoomContainers = document.querySelectorAll('.cursor-zoom-in');
+
+    if (lightbox && lightboxImg && lightboxCaption) {
+      
+      // Function to handle opening the lightbox
+      const openLightbox = (container: Element) => {
+        const img = container.querySelector('img');
+        if (!img) return;
+        
+        const src = img.getAttribute('data-zoom-src');
+        const alt = img.getAttribute('alt');
+        
+        if (src) {
+          lightboxImg.src = src;
+          lightboxCaption.innerText = alt || 'Homelab screenshot';
+          lightbox.classList.remove('hidden');
+          lightbox.classList.add('flex');
+          setTimeout(() => {
+            lightbox.classList.remove('opacity-0');
+            lightboxImg.classList.remove('scale-95');
+          }, 10);
+        }
+      };
+
+      // Function to handle closing the lightbox
+      const closeLightbox = () => {
+        lightbox.classList.add('opacity-0');
+        lightboxImg.classList.add('scale-95');
+        setTimeout(() => {
+          lightbox.classList.add('hidden');
+          lightbox.classList.remove('flex');
+          lightboxImg.src = '';
+        }, 300);
+      };
+
+      // Add click and keyboard event listeners to all zoomable images
+      zoomContainers.forEach(container => {
+        container.addEventListener('click', () => openLightbox(container));
+        
+        // Accessibility: Allow opening with Enter key when focused
+        container.addEventListener('keydown', (e) => {
+          const keyboardEvent = e as KeyboardEvent;
+          if (keyboardEvent.key === 'Enter') {
+            openLightbox(container);
+          }
+        });
+      });
+
+      // Close on click anywhere in the lightbox
+      lightbox.addEventListener('click', closeLightbox);
+
+      // Accessibility: Close on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+          closeLightbox();
+        }
+      });
+    }
+  });
+</script>
