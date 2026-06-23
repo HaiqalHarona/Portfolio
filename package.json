@@ -1,6 +1,6 @@
 {
   "name": "teal-transit",
-  "description": "Astrofy is a free and open-source template for your Personal Portfolio Website built with Astro and TailwindCSS. Create in minutes a website with Blog, CV, Project Section, Store and RSS Feed.",
+  "description": "My Personal Portfolio Website.",
   "type": "module",
   "version": "3.0.0",
   "scripts": {
@@ -13,7 +13,7 @@
   "dependencies": {
     "@astrojs/mdx": "^2.0.3",
     "@astrojs/rss": "^3.0.0",
-    "@astrojs/sitemap": "^3.0.1",
+    "@astrojs/sitemap": "^3.6.0",
     "@astrojs/tailwind": "^5.0.3",
     "astro": "^4.0.2",
     "daisyui": "^4.4.10",
