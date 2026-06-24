@@ -549,6 +549,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   /* Print styles optimization */
   @media print {
+      @page {
+          margin: 0;
+      }
+
+      :global(.drawer-side), :global(footer), :global(.sticky.lg\:hidden) {
+          display: none !important;
+      }
+
+      :global(.drawer-content), :global(main) {
+          padding: 0 !important;
+          margin: 0 !important;
+          max-width: 100% !important;
+      }
+
       :global(body.light-theme) {
           --primary-color: #5b21b6;
           --text-color: #0f0f16;
@@ -581,12 +595,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
           padding: 0 !important;
+          margin: 0 !important;
           font-size: 12px !important;
       }
 
       .resume-container {
           box-shadow: none !important;
-          padding: 0 !important;
+          padding: 40px 50px !important;
           max-width: 100% !important;
           background-color: var(--paper-bg) !important;
           color: var(--text-color) !important;

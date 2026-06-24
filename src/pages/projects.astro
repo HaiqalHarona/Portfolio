@@ -14,49 +14,115 @@ try {
 
 const personalAndFun = projects.filter(p => p.project_type === "personal" || p.project_type === "forfun");
 const schoolProjects = projects.filter(p => p.project_type === "school");
+
+let projectSummaries: any[] = [];
+try {
+  projectSummaries = await pb.collection("project_summary").getFullList();
+} catch (e) {
+  console.error("Failed to fetch project_summary from PocketBase:", e);
+}
 ---
 
 <BaseLayout title="Projects" sideBarActiveItemID="projects" currentPath="/projects">
-  <div>
-    <div class="text-3xl w-full font-bold mb-5">Personal & Side Projects</div>
+  <div class="font-mono text-3xl text-accent mb-6 font-bold">{`{`}</div>
+
+  <div class="border-l-2 border-base-content/10 ml-4 md:ml-8 pl-4 md:pl-8">
+    
+    <!-- Personal Projects -->
+    <div class="mb-6">
+      <span class="font-mono text-2xl text-secondary font-bold">"personal_projects"</span><span class="font-mono text-2xl text-base-content">: [</span>
+    </div>
+
+    <div class="border-l-2 border-base-content/10 ml-4 md:ml-8 pl-4 md:pl-8 mb-8">
+      {personalAndFun.length === 0 ? (
+        <p class="text-base-content/50 italic font-mono mb-5">null,</p>
+      ) : (
+        personalAndFun.map((project, index) => (
+          <div class="relative mb-8 group">
+            <div class="font-mono text-base-content/40 mb-3 text-lg">{`{`}</div>
+            <div class="ml-4 md:ml-8 transition-transform group-hover:-translate-y-1 duration-300 bg-base-200/50 rounded-xl p-4 border border-neutral/30 shadow-sm hover:shadow-md hover:border-primary/50">
+              <HorizontalCard
+                title={project.title}
+                img={project.cover_image ? pb.files.getUrl(project, project.cover_image) : "/post_img.webp"}
+                desc={project.description}
+                url={`/projects/${project.id}`}
+                badge={project.is_featured ? "Featured" : undefined}
+              />
+            </div>
+            <div class="font-mono text-base-content/40 mt-3 text-lg">{`}${index < personalAndFun.length - 1 ? ',' : ''}`}</div>
+          </div>
+        ))
+      )}
+    </div>
+    <div class="font-mono text-2xl text-base-content mb-12">],</div>
+
+    <!-- School Projects -->
+    <div class="mb-6">
+      <span class="font-mono text-2xl text-secondary font-bold">"school_projects"</span><span class="font-mono text-2xl text-base-content">: [</span>
+    </div>
+
+    <div class="border-l-2 border-base-content/10 ml-4 md:ml-8 pl-4 md:pl-8 mb-12">
+      {schoolProjects.length === 0 ? (
+        <p class="text-base-content/50 italic font-mono mb-5">null</p>
+      ) : (
+        schoolProjects.map((project, index) => (
+          <div class="relative mb-8 group">
+            <div class="font-mono text-base-content/40 mb-3 text-lg">{`{`}</div>
+            <div class="ml-4 md:ml-8 transition-transform group-hover:-translate-y-1 duration-300 bg-base-200/50 rounded-xl p-4 border border-neutral/30 shadow-sm hover:shadow-md hover:border-primary/50">
+              <HorizontalCard
+                title={project.title}
+                img={project.cover_image ? pb.files.getUrl(project, project.cover_image) : "/post_img.webp"}
+                desc={project.description}
+                url={`/projects/${project.id}`}
+                badge={project.is_featured ? "Featured" : undefined}
+              />
+            </div>
+            <div class="font-mono text-base-content/40 mt-3 text-lg">{`}${index < schoolProjects.length - 1 ? ',' : ''}`}</div>
+          </div>
+        ))
+      )}
+    </div>
+    <div class="font-mono text-2xl text-base-content mb-12">],</div>
+
+    <!-- Project Summaries -->
+    <div class="mb-6">
+      <span class="font-mono text-2xl text-secondary font-bold">"project_summaries"</span><span class="font-mono text-2xl text-base-content">: [</span>
+    </div>
+
+    <div class="border-l-2 border-base-content/10 ml-4 md:ml-8 pl-4 md:pl-8 mb-4">
+      {projectSummaries.length === 0 ? (
+        <p class="text-base-content/50 italic font-mono mb-5">null</p>
+      ) : (
+        projectSummaries.map((summary, index) => (
+          <div class="relative mb-8 group">
+            <div class="font-mono text-base-content/40 mb-3 text-lg">{`{`}</div>
+            <div class="ml-4 md:ml-8 transition-transform group-hover:-translate-y-1 duration-300 bg-base-200/50 rounded-xl p-5 border border-neutral/30 shadow-sm hover:shadow-md hover:border-primary/50">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="font-bold text-xl text-primary">{summary.title}</h3>
+                {summary.github && (
+                  <a href={summary.github} target="_blank" class="badge badge-outline hover:bg-base-content hover:text-base-100">
+                    GitHub ↗
+                  </a>
+                )}
+              </div>
+              <p class="text-base-content/80 mb-4">{summary.description}</p>
+              {summary.stack && summary.stack.length > 0 && (
+                <div class="flex flex-wrap gap-2">
+                  {summary.stack.map((tech: string) => (
+                    <span class="badge badge-sm badge-secondary">{tech}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div class="font-mono text-base-content/40 mt-3 text-lg">{`}${index < projectSummaries.length - 1 ? ',' : ''}`}</div>
+          </div>
+        ))
+      )}
+    </div>
+    <div class="font-mono text-2xl text-base-content mb-2">]</div>
+    
   </div>
 
-  {personalAndFun.length === 0 ? (
-    <p class="text-base-content/50 italic mb-5">No projects found.</p>
-  ) : (
-    personalAndFun.map((project) => (
-      <>
-        <HorizontalCard
-          title={project.title}
-          img={project.cover_image ? pb.files.getUrl(project, project.cover_image) : "/post_img.webp"}
-          desc={project.description}
-          url={`/projects/${project.id}`}
-          badge={project.is_featured ? "Featured" : undefined}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  )}
-
-  <div class="mt-10">
-    <div class="text-3xl w-full font-bold mb-5">Academic & School Projects</div>
-  </div>
-
-  {schoolProjects.length === 0 ? (
-    <p class="text-base-content/50 italic mb-5">No projects found.</p>
-  ) : (
-    schoolProjects.map((project) => (
-      <>
-        <HorizontalCard
-          title={project.title}
-          img={project.cover_image ? pb.files.getUrl(project, project.cover_image) : "/post_img.webp"}
-          desc={project.description}
-          url={`/projects/${project.id}`}
-          badge={project.is_featured ? "Featured" : undefined}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  )}
+  <div class="font-mono text-3xl text-accent mt-6 font-bold">{`}`}</div>
 </BaseLayout>
 

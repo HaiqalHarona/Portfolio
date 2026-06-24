@@ -4,246 +4,525 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout sideBarActiveItemID="stack" currentPath="/stack">
-  <div class="max-w-4xl mx-auto px-4">
-    <!-- Page Header -->
-    <div class="mb-8">
-      <h1 class="text-4xl font-bold text-primary mb-2">docker-compose.yml</h1>
-      <p class="text-lg opacity-80">My production homelab and infrastructure stack.</p>
-    </div>
-
-    <!-- The Philosophy -->
-    <div class="bg-neutral/50 border border-neutral p-6 rounded-lg mb-10 text-sm">
-      <h3 class="text-secondary font-bold mb-2">// Resource-Constrained Engineering</h3>
-      <p class="opacity-80">
-        I built my production environment using repurposed thin clients, asymmetric memory arrays, and salvaged drives. Running a modern backend stack on this hardware forces me to deeply understand container lifecycle management, optimize database queries for strict resource limits, and handle asynchronous storage bottlenecks. I don't just deploy containers; I engineer them to run efficiently anywhere.
+  <div class="max-w-4xl mx-auto px-4 font-mono">
+    <div class="mb-8 boot-sequence" style="--delay: 0ms;">
+      <h1 class="text-4xl font-bold text-primary mb-2 flex items-center">
+        docker-compose.yml<span
+          id="main-cursor"
+          class="ml-1 inline-block w-3 h-8 bg-primary"></span>
+      </h1>
+      <p class="text-lg opacity-80 text-secondary">
+        My production homelab and infrastructure stack.
       </p>
     </div>
 
-    <!-- Homarr Unified Portal -->
-    <h2 class="text-2xl font-bold mb-4 flex items-center">
-      <span class="text-primary mr-2">portal</span> <span class="opacity-50 text-lg font-normal">:: Homarr Dashboard</span>
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-      <div class="card bg-base-200 border border-neutral shadow-xl justify-center">
-        <div class="card-body p-6">
-          <h3 class="text-secondary font-bold mb-2 font-mono">// Unified Entrypoint Portal</h3>
-          <p class="text-sm opacity-95">
-            Homarr serves as the central entrypoint for the entire self-hosted stack. It provides quick navigation links, visual service status monitoring, and layout shortcuts to all hosted applications and admin tools.
+    <div
+      class="border border-neutral bg-[#0a0a0a] mb-10 text-sm shadow-[0_0_15px_rgba(34,211,238,0.05)] stdout-container"
+    >
+      <div
+        class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center"
+      >
+        <div class="flex space-x-1.5 mr-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F]"></div>
+        </div>
+        <span>cat notes.txt</span>
+      </div>
+      <div class="p-5">
+        <p class="opacity-80 leading-relaxed text-base-content">
+          <span class="text-accent font-bold mr-2 terminal-prompt"
+            >user@homelab:~#</span
+          >
+          <span class="stdout-line"
+            >I put this environment together using older repurposed thin clients
+            and whatever drives I could salvage.</span
+          >
+        </p>
+        <p
+          class="opacity-80 leading-relaxed text-base-content mt-2 stdout-line"
+        >
+          It's definitely not the most powerful setup out there, but running a
+          modern stack on constrained hardware has been an amazing teacher.
+        </p>
+        <p
+          class="opacity-80 leading-relaxed text-base-content mt-2 stdout-line"
+        >
+          > It forces you to actually pay attention to memory limits, efficient
+          database queries, and container footprints. It's just a really fun
+          sandbox to learn how to do more with less.
+        </p>
+      </div>
+    </div>
+
+    <div class="stdout-container">
+      <h2 class="text-xl font-bold mb-4 flex items-center text-primary">
+        <span class="mr-2 terminal-prompt">>_</span>
+        <span class="stdout-line">portal :: Homarr Dashboard</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div class="border border-neutral bg-[#0a0a0a] flex flex-col">
+          <div
+            class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center"
+          >
+            <span>docker ps | grep homarr</span>
+          </div>
+          <div class="p-5 flex-grow">
+            <p class="text-sm opacity-90 leading-relaxed stdout-line">
+              Homarr serves as the central entrypoint for the entire self-hosted
+              stack.
+            </p>
+            <p class="text-sm opacity-90 leading-relaxed mt-2 stdout-line">
+              It provides quick navigation links, visual service status
+              monitoring, and layout shortcuts to all hosted applications and
+              admin tools.
+            </p>
+          </div>
+        </div>
+        <div
+          class="border border-neutral/40 bg-neutral/10 p-1 boot-sequence"
+          style="--delay: 200ms;"
+        >
+          <div
+            class="relative group cursor-zoom-in overflow-hidden"
+            tabindex="0"
+            role="button"
+            aria-label="Zoom Homarr dashboard image"
+          >
+            <img
+              src="/images/compose/homarr.png"
+              alt="Homarr Dashboard"
+              class="w-full h-auto object-cover border border-neutral/20 grayscale-[20%] group-hover:grayscale-0 transition-all duration-300"
+              data-zoom-src="/images/compose/homarr.png"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stdout-container">
+      <h2
+        class="text-xl font-bold mb-4 flex items-center flex-wrap text-accent"
+      >
+        <span class="mr-2 terminal-prompt">>_</span>
+        <span class="stdout-line"
+          >node_01 :: Mariposa (Gateway & Networking)</span
+        >
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div class="border border-neutral bg-[#0a0a0a]">
+          <div
+            class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral"
+          >
+            <span>neofetch --stdout</span>
+          </div>
+          <div class="p-5">
+            <ul class="text-sm space-y-3 opacity-90">
+              <li class="stdout-line">
+                <span class="text-accent font-bold">OS......</span> Ubuntu 24.04.4
+                LTS
+              </li>
+              <li class="stdout-line">
+                <span class="text-accent font-bold">Host....</span> HP Thin Client
+              </li>
+              <li class="stdout-line">
+                <span class="text-accent font-bold">CPU.....</span> AMD GX-420GI (2C/4T
+                @ 2.0GHz)
+              </li>
+              <li class="stdout-line">
+                <span class="text-accent font-bold">Memory..</span> 20GB DDR4
+              </li>
+              <li class="stdout-line">
+                <span class="text-accent font-bold">Disk....</span> 128GB SATA SSD
+              </li>
+              <li class="pt-2 border-t border-neutral/30 mt-2 stdout-line">
+                <span class="text-secondary font-bold">Role:</span> Reverse Proxy,
+                DNS Gateway, Deployments
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="border border-neutral/40 bg-neutral/10 p-1 flex flex-col justify-center boot-sequence"
+          style="--delay: 200ms;"
+        >
+          <div
+            class="relative group cursor-zoom-in overflow-hidden"
+            tabindex="0"
+            role="button"
+            aria-label="Zoom Node 1 monitoring image"
+          >
+            <img
+              src="/images/compose/Node_1.png"
+              alt="HP Thin Client Resource Monitor"
+              class="w-full h-auto object-cover border border-neutral/20 grayscale-[20%] group-hover:grayscale-0 transition-all duration-300"
+              data-zoom-src="/images/compose/Node_1.png"
+            />
+          </div>
+          <p class="text-[10px] text-accent/70 mt-2 px-1">
+            > status: active monitoring
           </p>
         </div>
       </div>
-      <!-- Homarr Dashboard Image -->
-      <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2 flex flex-col justify-center">
-        <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Homarr dashboard image">
-          <img 
-            src="/images/compose/homarr.png" 
-            alt="Homarr Main Application Dashboard" 
-            class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform" 
-            data-zoom-src="/images/compose/homarr.png"
-          />
-        </div>
-      </div>
     </div>
 
-    <!-- Node 01: Networking Server -->
-    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 flex-wrap">
-      <span class="badge badge-accent font-mono text-xs uppercase">Node 1</span>
-      <span class="text-accent font-bold">[SERVER_NAME]</span>
-      <span class="opacity-50 text-lg font-normal">:: Gateway & Networking</span>
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-      <div class="card bg-base-200 border border-neutral shadow-xl">
-        <div class="card-body p-6">
-          <ul class="font-mono text-sm space-y-2 opacity-90">
-            <li><span class="text-secondary font-bold">OS:</span> Ubuntu 24.04.4 LTS</li>
-            <li><span class="text-secondary font-bold">Chassis:</span> HP Thin Client</li>
-            <li><span class="text-secondary font-bold">CPU:</span> AMD GX-420GI (2C/4T @ 2.0GHz)</li>
-            <li><span class="text-secondary font-bold">RAM:</span> 20GB DDR4</li>
-            <li><span class="text-secondary font-bold">Storage:</span> 128GB SATA SSD</li>
-            <li><span class="text-secondary font-bold">Role:</span> Reverse Proxy, DNS Gateway, Deployment Containers</li>
-          </ul>
+    <div class="stdout-container">
+      <h2 class="text-xl font-bold mb-4 flex items-center flex-wrap text-info">
+        <span class="mr-2 terminal-prompt">>_</span>
+        <span class="stdout-line">node_02 :: Nexus (Database & Compute)</span>
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div class="border border-neutral bg-[#0a0a0a]">
+          <div
+            class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral"
+          >
+            <span>neofetch --stdout</span>
+          </div>
+          <div class="p-5">
+            <ul class="text-sm space-y-3 opacity-90">
+              <li class="stdout-line">
+                <span class="text-info font-bold">OS......</span> Ubuntu 24.04.4 LTS
+              </li>
+              <li class="stdout-line">
+                <span class="text-info font-bold">Host....</span> Lenovo ThinkCentre
+                M710 SFF
+              </li>
+              <li class="stdout-line">
+                <span class="text-info font-bold">CPU.....</span> Intel i5-8500 (6C/6T
+                @ 4.1GHz)
+              </li>
+              <li class="stdout-line">
+                <span class="text-info font-bold">Memory..</span> 16GB DDR4
+              </li>
+              <li class="stdout-line">
+                <span class="text-info font-bold">Disk....</span> 500GB SSD + 1TB
+                Toshiba HDD
+              </li>
+              <li class="pt-2 border-t border-neutral/30 mt-2 stdout-line">
+                <span class="text-secondary font-bold">Role:</span> PocketBase, Portainer,
+                Core Microservices
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <!-- Node 1 Image -->
-      <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2 flex flex-col justify-center">
-        <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Node 1 monitoring image">
-          <img 
-            src="/images/compose/Node_1.png" 
-            alt="HP Thin Client Resource Monitor (Node_1)" 
-            class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform"
-            data-zoom-src="/images/compose/Node_1.png"
-          />
-        </div>
-        <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">HP Thin Client Dashdot Resource Monitor</p>
-      </div>
-    </div>
-
-    <!-- Node 02: Backend Server -->
-    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2 flex-wrap">
-      <span class="badge badge-info font-mono text-xs uppercase">Node 2</span>
-      <span class="text-info font-bold">[SERVER_NAME]</span>
-      <span class="opacity-50 text-lg font-normal">:: Database & Compute</span>
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-      <div class="card bg-base-200 border border-neutral shadow-xl">
-        <div class="card-body p-6">
-          <ul class="font-mono text-sm space-y-2 opacity-90">
-            <li><span class="text-secondary font-bold">OS:</span> Ubuntu 24.04.4 LTS</li>
-            <li><span class="text-secondary font-bold">Chassis:</span> Lenovo ThinkCentre M710 SFF</li>
-            <li><span class="text-secondary font-bold">CPU:</span> Intel Core i5-8500 (6C/6T @ 4.1GHz)</li>
-            <li><span class="text-secondary font-bold">RAM:</span> 16GB DDR4</li>
-            <li><span class="text-secondary font-bold">Storage:</span> 500GB SSD + 1TB Toshiba HDD</li>
-            <li><span class="text-secondary font-bold">Role:</span> PocketBase, Portainer, MySQL, PostgreSQL, MongoDB, Redis Caching</li>
-          </ul>
-        </div>
-      </div>
-      <!-- Node 2 Images (Lenovo Dashdot + Database + Portainer Stack) -->
-      <div class="space-y-4">
-        <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2">
-          <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Node 2 monitoring image">
-            <img 
-              src="/images/compose/Node_2.png" 
-              alt="Lenovo ThinkCentre SFF Resource Monitor (Node_2)" 
-              class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform"
+        <div
+          class="border border-neutral/40 bg-neutral/10 p-1 flex flex-col justify-center boot-sequence"
+          style="--delay: 200ms;"
+        >
+          <div
+            class="relative group cursor-zoom-in overflow-hidden"
+            tabindex="0"
+            role="button"
+            aria-label="Zoom Node 2 monitoring image"
+          >
+            <img
+              src="/images/compose/Node_2.png"
+              alt="Lenovo Dashdot"
+              class="w-full h-auto object-cover border border-neutral/20 grayscale-[20%] group-hover:grayscale-0 transition-all duration-300"
               data-zoom-src="/images/compose/Node_2.png"
             />
           </div>
-          <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">Lenovo ThinkCentre Dashdot Resource Monitor</p>
+          <p class="text-[10px] text-info/70 mt-2 px-1">
+            > status: active monitoring
+          </p>
         </div>
+      </div>
+    </div>
 
-        <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2">
-          <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom database schema image">
-            <img 
-              src="/images/compose/database.png" 
-              alt="Database Administration Panel (PocketBase)" 
-              class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform"
+    <div class="stdout-container mt-12 mb-20">
+      <h2 class="text-xl font-bold mb-4 flex items-center text-success">
+        <span class="mr-2 terminal-prompt">>_</span>
+        <span class="stdout-line"
+          >ops :: Zero-Trust Database Administration</span
+        >
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="border border-neutral bg-[#0a0a0a]">
+          <div
+            class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral"
+          >
+            <span>tailscale status</span>
+          </div>
+          <div class="p-5">
+            <p class="text-sm opacity-90 mb-4 leading-relaxed stdout-line">
+              My entire homelab sits securely behind a private NAT. No databases
+              or admin panels are ever exposed to the public internet.
+            </p>
+            <p class="text-sm opacity-90 mb-4 leading-relaxed stdout-line">
+              Instead, I use Tailscale (WireGuard) to create an encrypted,
+              peer-to-peer mesh network between my servers and my development
+              laptop.
+            </p>
+          </div>
+        </div>
+        <div
+          class="border border-neutral/40 bg-neutral/10 p-1 flex flex-col justify-center boot-sequence"
+          style="--delay: 200ms;"
+        >
+          <div
+            class="relative group cursor-zoom-in overflow-hidden"
+            tabindex="0"
+            role="button"
+            aria-label="Zoom Tailscale interface image"
+          >
+            <img
+              src="/images/compose/tailscale.png"
+              alt="Tailscale VPN"
+              class="w-full h-auto object-cover border border-neutral/20 grayscale-[20%] group-hover:grayscale-0 transition-all duration-300"
+              data-zoom-src="/images/compose/tailscale.png"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="border border-neutral bg-[#0a0a0a]">
+          <div
+            class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral"
+          >
+            <span>psql -h 100.x.x.x -U admin</span>
+          </div>
+          <div class="p-5">
+            <p class="text-sm opacity-90 mb-4 leading-relaxed stdout-line">
+              Because I am securely tunneled into the network, my local development
+              environment connects directly to my remote development and
+              production databases (a cardinal sin in enterprise engineering,
+              but a highly efficient guilty pleasure for a solo dev).
+            </p>
+            <p
+              class="text-sm opacity-90 leading-relaxed text-success/80 stdout-line"
+            >
+              > Direct database connection established via private cloud. Local
+              synchronization bypassed. Data integrity guaranteed (hopefully).
+            </p>
+          </div>
+        </div>
+        <div
+          class="border border-neutral/40 bg-neutral/10 p-1 flex flex-col justify-center boot-sequence"
+          style="--delay: 400ms;"
+        >
+          <div
+            class="relative group cursor-zoom-in overflow-hidden"
+            tabindex="0"
+            role="button"
+            aria-label="Zoom Database interface image"
+          >
+            <img
+              src="/images/compose/database.png"
+              alt="PocketBase Database Schema"
+              class="w-full h-auto object-cover border border-neutral/20 grayscale-[20%] group-hover:grayscale-0 transition-all duration-300"
               data-zoom-src="/images/compose/database.png"
             />
           </div>
-          <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">PocketBase Database Console Schema</p>
-        </div>
-
-        <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2">
-          <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Portainer stack image">
-            <img 
-              src="/images/compose/portainer.png" 
-              alt="Portainer Docker Management Console" 
-              class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform"
-              data-zoom-src="/images/compose/portainer.png"
-            />
-          </div>
-          <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">Portainer Graphical Stack Manager</p>
         </div>
       </div>
     </div>
-
-    <!-- Remote Development Section -->
-    <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
-      <span class="text-success mr-2">vpn</span> <span class="opacity-50 text-lg font-normal">:: Remote Development (from my laptop)</span>
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-      <div class="card bg-base-200 border border-neutral shadow-xl">
-        <div class="card-body p-6 justify-center">
-          <h3 class="text-secondary font-bold mb-3 font-mono">// Secure Overlay Mesh Networking</h3>
-          <p class="text-sm opacity-95 mb-4">
-            I use Tailscale to manage and access my home-hosted applications to configure and deploy remotely using limited permission accounts. It creates a secure encrypted mesh network that solves remote access without port forwarding.
-          </p>
-          <p class="text-sm opacity-95 mb-4">
-            Through Tailscale Share, I can securely invite friends directly to my staging environments for testing and review without exposing public endpoints.
-          </p>
-          <p class="text-sm opacity-95">
-            This VPN connection allows me to develop applications on my laptop without running a local database. I can directly connect to my private cloud-hosted database, eliminating database synchronization issues during production deployment.
-          </p>
-        </div>
-      </div>
-      <!-- Tailscale Image -->
-      <div class="rounded-xl overflow-hidden border border-neutral/40 shadow-lg bg-neutral/20 p-2 flex flex-col justify-center">
-        <div class="relative group cursor-zoom-in overflow-hidden rounded-lg" tabindex="0" role="button" aria-label="Zoom Tailscale interface image">
-          <img 
-            src="/images/compose/tailscale.png" 
-            alt="Tailscale Mesh VPN Dashboard" 
-            class="w-full h-auto object-cover rounded-lg border border-neutral/10 hover:scale-[1.015] transition-transform" 
-            data-zoom-src="/images/compose/tailscale.png"
-          />
-        </div>
-        <p class="text-[11px] text-center font-mono opacity-50 mt-1.5">Tailscale Mesh VPN Overlay Interface</p>
-      </div>
-    </div>
-
   </div>
 
-  <!-- Lightbox Modal -->
-  <div id="image-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4 cursor-zoom-out opacity-0 transition-opacity duration-300">
-    <div class="relative max-w-5xl max-h-[85vh] w-full h-full flex flex-col justify-center items-center">
-      <img id="lightbox-img" class="max-w-full max-h-[80vh] rounded shadow-2xl transition-transform duration-300 scale-95 object-contain" src="" alt="" />
-      <p id="lightbox-caption" class="text-white text-sm font-sans mt-3 text-center bg-black/60 px-4 py-1.5 rounded-full border border-white/10 font-mono"></p>
+  <div
+    id="image-lightbox"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-[#050505]/95 p-4 cursor-zoom-out opacity-0 transition-opacity duration-300 backdrop-blur-sm"
+  >
+    <div
+      class="relative max-w-5xl max-h-[85vh] w-full h-full flex flex-col justify-center items-center"
+    >
+      <img
+        id="lightbox-img"
+        class="max-w-full max-h-[80vh] border border-neutral shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-transform duration-300 scale-95 object-contain"
+        src=""
+        alt=""
+      />
+      <p
+        id="lightbox-caption"
+        class="text-success text-sm mt-4 text-center bg-black border border-success/30 px-4 py-1.5 font-mono"
+      >
+        > <span id="caption-text"></span><span
+          class="blinking-cursor ml-1 inline-block w-2 h-4 bg-success align-middle"
+        ></span>
+      </p>
     </div>
   </div>
 </BaseLayout>
 
 <script>
-  // Changed from DOMContentLoaded to astro:page-load to support View Transitions
-  document.addEventListener('astro:page-load', () => {
-    const lightbox = document.getElementById('image-lightbox');
-    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-    const lightboxCaption = document.getElementById('lightbox-caption');
-    const zoomContainers = document.querySelectorAll('.cursor-zoom-in');
+  document.addEventListener("astro:page-load", () => {
+    // 1. Terminal stdout Gen Animation Logic
+    const stdoutObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // When the terminal window enters the screen
+          if (
+            entry.isIntersecting &&
+            !entry.target.classList.contains("executed")
+          ) {
+            entry.target.classList.add("executed"); // Mark as run (hides the waiting cursor)
+
+            const lines = entry.target.querySelectorAll(".stdout-line");
+            let delay = 0;
+
+            lines.forEach((line, index) => {
+              setTimeout(() => {
+                // Remove the active printing block from the previous line
+                if (index > 0) lines[index - 1].classList.remove("printing");
+
+                // Reveal the current line and attach the solid typing block
+                line.classList.add("printed", "printing");
+
+                // When the very last line finishes typing, switch from a solid block to a blinking cursor
+                if (index === lines.length - 1) {
+                  setTimeout(() => {
+                    line.classList.remove("printing");
+                    line.classList.add("finished"); // This class triggers the 1s blink
+                  }, 800);
+                }
+              }, delay);
+
+              // Randomize typing speed for realism (between 40ms and 150ms)
+              delay += Math.floor(Math.random() * 110) + 40;
+            });
+          }
+        });
+      },
+      {
+        rootMargin: "0px 0px -15% 0px",
+      },
+    );
+
+    document.querySelectorAll(".stdout-container").forEach((container) => {
+      stdoutObserver.observe(container);
+    });
+
+    // 2. Lightbox Logic
+    const lightbox = document.getElementById("image-lightbox");
+    const lightboxImg = document.getElementById(
+      "lightbox-img",
+    ) as HTMLImageElement;
+    const lightboxCaption = document.getElementById("caption-text");
+    const zoomContainers = document.querySelectorAll(".cursor-zoom-in");
 
     if (lightbox && lightboxImg && lightboxCaption) {
-      
-      // Function to handle opening the lightbox
       const openLightbox = (container: Element) => {
-        const img = container.querySelector('img');
+        const img = container.querySelector("img");
         if (!img) return;
-        
-        const src = img.getAttribute('data-zoom-src');
-        const alt = img.getAttribute('alt');
-        
+        const src = img.getAttribute("data-zoom-src");
+        const alt = img.getAttribute("alt");
+
         if (src) {
           lightboxImg.src = src;
-          lightboxCaption.innerText = alt || 'Homelab screenshot';
-          lightbox.classList.remove('hidden');
-          lightbox.classList.add('flex');
+          lightboxCaption.innerText = alt || "system_screenshot.png";
+          lightbox.classList.remove("hidden");
+          lightbox.classList.add("flex");
           setTimeout(() => {
-            lightbox.classList.remove('opacity-0');
-            lightboxImg.classList.remove('scale-95');
+            lightbox.classList.remove("opacity-0");
+            lightboxImg.classList.remove("scale-95");
           }, 10);
         }
       };
 
-      // Function to handle closing the lightbox
       const closeLightbox = () => {
-        lightbox.classList.add('opacity-0');
-        lightboxImg.classList.add('scale-95');
+        lightbox.classList.add("opacity-0");
+        lightboxImg.classList.add("scale-95");
         setTimeout(() => {
-          lightbox.classList.add('hidden');
-          lightbox.classList.remove('flex');
-          lightboxImg.src = '';
+          lightbox.classList.add("hidden");
+          lightbox.classList.remove("flex");
+          lightboxImg.src = "";
         }, 300);
       };
 
-      // Add click and keyboard event listeners to all zoomable images
-      zoomContainers.forEach(container => {
-        container.addEventListener('click', () => openLightbox(container));
-        
-        // Accessibility: Allow opening with Enter key when focused
-        container.addEventListener('keydown', (e) => {
+      zoomContainers.forEach((container) => {
+        container.addEventListener("click", () => openLightbox(container));
+        container.addEventListener("keydown", (e) => {
           const keyboardEvent = e as KeyboardEvent;
-          if (keyboardEvent.key === 'Enter') {
-            openLightbox(container);
-          }
+          if (keyboardEvent.key === "Enter") openLightbox(container);
         });
       });
 
-      // Close on click anywhere in the lightbox
-      lightbox.addEventListener('click', closeLightbox);
-
-      // Accessibility: Close on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+      lightbox.addEventListener("click", closeLightbox);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !lightbox.classList.contains("hidden"))
           closeLightbox();
-        }
       });
     }
   });
 </script>
+
+<style>
+  /* 1. Standard, relaxed terminal blink (1 second pulse) */
+  @keyframes terminal-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* Main header cursor and Lightbox cursor always blink relaxedly */
+  #main-cursor,
+  .blinking-cursor {
+    animation: terminal-blink 1s step-end infinite;
+  }
+
+  /* Boot Sequence for Images/Headers */
+  .boot-sequence {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-up 0.5s ease-out forwards;
+    animation-delay: var(--delay);
+  }
+  @keyframes fade-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* --- Terminal Execution Styles --- */
+
+  /* The waiting state: The prompt gets a relaxing blinking cursor BEFORE execution */
+  .stdout-container:not(.executed) .terminal-prompt::after {
+    content: "█";
+    display: inline-block;
+    margin-left: 8px;
+    color: currentColor;
+    animation: terminal-blink 1s step-end infinite;
+    vertical-align: baseline;
+  }
+
+  /* Hide the lines initially */
+  .stdout-line {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  /* Reveal the text when executed */
+  .stdout-line.printed {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* The active typing state: SOLID block, no blinking while typing */
+  .stdout-line.printing::after {
+    content: "█";
+    display: inline-block;
+    margin-left: 6px;
+    color: currentColor;
+    vertical-align: baseline;
+  }
+
+  /* The finished state: The final line goes back to a relaxed blink forever */
+  .stdout-line.finished::after {
+    content: "█";
+    display: inline-block;
+    margin-left: 6px;
+    color: currentColor;
+    animation: terminal-blink 1s step-end infinite;
+    vertical-align: baseline;
+  }
+
+  .border {
+    border-radius: 0px !important;
+  }
+</style>
