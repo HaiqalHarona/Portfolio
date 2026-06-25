@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "create-test-project": "node scratch/create-test-project.js"
+    "create-test-project": "node scratch/create-test-project.js",
+    "migrate": "node scratch/migrate.js"
   },
   "dependencies": {
     "@astrojs/mdx": "^2.0.3",

@@ -3,7 +3,7 @@ import path from 'path';
 import PocketBase from 'pocketbase';
 
 // Parse .env if it exists
-let pbUrl = 'http://127.0.0.1:8090';
+let pbUrl = '';
 let adminEmail = '';
 let adminPassword = '';
 
@@ -54,17 +54,35 @@ async function run() {
   }
 
   const testProject = {
-    title: 'WebGPU',
+    title: 'Extremely Cool Raytracer & WebGPU Engine',
     project_type: 'forfun',
-    description: 'A custom high-performance WebGPU rasterizer and raytracer built from scratch.\n\nSupports forward and deferred rendering paths, bind group caching, and custom shader compilation.',
+    description: `A custom high-performance WebGPU rasterizer and raytracer built from scratch.
+
+This test project showcases our newly added media embeds capability, allowing you to showcase project demos with YouTube, Vimeo, direct MP4 videos, and animated GIFs without needing to host them directly in PocketBase.
+
+### Key Architectural Highlights
+- **Hybrid Rendering Pipeline**: Real-time raytracing coupled with a classic forward/deferred WebGPU rasterizer.
+- **Compute Shader Acceleration**: Grid acceleration structures and BVH traversal optimized entirely in WGSL.
+- **Dynamic Resource Binding**: Automated bind group layout caching and automatic resource lifetime tracking.
+- **Zero-Allocation Render Loop**: Frame-allocated buffer pools to minimize host-side CPU overhead.
+
+Check out the demos below containing high-quality renders and development capture clips!`,
     timeline: 'Jan 2026 - Present',
-    tech_stack: JSON.stringify(['Rust', 'WebGPU', 'WGPU', 'WGSL']),
+    tech_stack: JSON.stringify(['Rust', 'WebGPU', 'WGPU', 'WGSL', 'Raytracing']),
     is_featured: true,
     links: JSON.stringify([
-      { label: 'Documentation', url: 'https://example.com/docs' }
+      { label: 'Project GitHub repository', url: 'https://github.com/example/webgpu-render-engine' },
+      { label: 'Interactive Live Demo', url: 'https://example.com/live-demo' },
+      { label: 'Technical Whitepaper (PDF)', url: 'https://example.com/docs' }
     ]),
     github_link: 'https://github.com/example/webgpu-render-engine',
-    website_link: 'https://example.com/live-demo'
+    website_link: 'https://example.com/live-demo',
+    cover_image_url: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80',
+    video_links: JSON.stringify([
+      'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      'https://media.giphy.com/media/3oKIPnAiaMCws8nruU/giphy.gif'
+    ]),
+    long_form_video_link: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
   };
 
   try {

@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="About Me" sideBarActiveItemID="about-me" currentPath="/about-me">
+  <div class="max-w-4xl mx-auto px-4 py-8 font-mono">
+    <!-- Breadcrumbs / File Header -->
+    <div class="text-xs opacity-50 mb-6 flex items-center gap-2">
+      <span>root</span>
+      <span>/</span>
+      <span class="text-teal-400">about-me.md</span>
+    </div>
+
+    <!-- Markdown Render Area -->
+    <div class="bg-base-200/40 border border-neutral/50 rounded-xl p-6 md:p-10 shadow-md prose prose-invert max-w-none">
+      <h1 class="text-3xl md:text-4xl font-bold text-primary border-b border-neutral pb-4 mb-6 flex items-center gap-2">
+        # About Me
+      </h1>
+
+      <p class="text-base-content/85 leading-relaxed text-lg mb-6">
+        Hi there! I'm <strong>Haiqal Bin Harona</strong>, a backend-focused full-stack developer, homelab enthusiast, and automation builder based in Singapore. I build software systems from the ground up because I enjoy solving complex logic and infrastructure puzzles.
+      </p>
+
+      <h2 class="text-2xl font-bold text-secondary border-b border-neutral/50 pb-2 mb-4 mt-8">
+        ## Who I Am & My Philosophy
+      </h2>
+      <p class="text-base-content/85 leading-relaxed mb-4">
+        I believe in understanding how systems work end-to-end. While I can build fully responsive frontends, my core passion lies in the architecture of what's under the hood—databases, reverse proxies, container orchestration, and server-side logic.
+      </p>
+      <ul class="list-disc list-inside space-y-2 text-base-content/80 mb-6">
+        <li><strong>Infrastructure-First:</strong> My home network runs containerized servers to host APIs, database instances, and secure VPN tunnels under real-world conditions.</li>
+        <li><strong>Automation Mindset:</strong> If a task is repetitive, I'll automate it using Python, Playwright, or UiPath.</li>
+        <li><strong>Continuous Learning:</strong> Currently pursuing a Diploma in Infocomm Media Engineering at Nanyang Polytechnic, exploring modern architecture daily.</li>
+      </ul>
+
+      <h2 class="text-2xl font-bold text-secondary border-b border-neutral/50 pb-2 mb-4 mt-8">
+        ## Current Tech Stack & Homelab
+      </h2>
+      <p class="text-base-content/85 leading-relaxed mb-4">
+        Here are the technologies I actively use and manage:
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-mono mb-6">
+        <div class="bg-neutral/20 border border-neutral/30 rounded-lg p-4">
+          <h3 class="text-accent font-bold mb-2">Backend & APIs</h3>
+          <ul class="space-y-1 text-base-content/75">
+            <li>- PHP (Laravel, Livewire)</li>
+            <li>- Node.js & Express</li>
+            <li>- PostgreSQL, MySQL, Redis</li>
+            <li>- RESTful API design & Auth</li>
+          </ul>
+        </div>
+        <div class="bg-neutral/20 border border-neutral/30 rounded-lg p-4">
+          <h3 class="text-accent font-bold mb-2">DevOps & Homelab</h3>
+          <ul class="space-y-1 text-base-content/75">
+            <li>- Docker & Portainer</li>
+            <li>- Nginx Proxy Manager</li>
+            <li>- Cloudflare Tunnels & Security</li>
+            <li>- System Monitoring (Dashdot, Homarr)</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-bold text-secondary border-b border-neutral/50 pb-2 mb-4 mt-8">
+        ## Get In Touch
+      </h2>
+      <p class="text-base-content/85 leading-relaxed mb-6">
+        Want to talk about full-stack engineering, automation, or host-it-yourself infrastructure? Reach out to me:
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="/contact" class="btn btn-primary btn-sm">> ./ping.sh</a>
+        <a href="/cv" class="btn btn-outline btn-sm">> cat cv.md</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -127,6 +127,18 @@
         "type": "file"
       },
       {
+        "exceptDomains": [],
+        "hidden": false,
+        "id": "field_coverimgurl",
+        "name": "cover_image_url",
+        "onlyDomains": [],
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "url"
+      },
+      {
         "hidden": false,
         "id": "field_videos12",
         "maxSelect": 3,
@@ -161,6 +173,29 @@
         "system": false,
         "thumbs": [],
         "type": "file"
+      },
+      {
+        "hidden": false,
+        "id": "field_videolinks",
+        "maxSize": 2000000,
+        "name": "video_links",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "json"
+      },
+      {
+        "exceptDomains": [],
+        "hidden": false,
+        "id": "field_longvideolink",
+        "name": "long_form_video_link",
+        "onlyDomains": [],
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "url"
       },
       {
         "exceptDomains": [],

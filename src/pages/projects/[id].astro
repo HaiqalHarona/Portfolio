@@ -65,9 +65,12 @@ if (project.links) {
   }
 }
 
-const coverUrl = project.cover_image
-  ? pb.files.getUrl(project, project.cover_image)
-  : null;
+let coverUrl = project.cover_image_url || null;
+if (!coverUrl && project.cover_image) {
+  coverUrl = project.cover_image.startsWith("http://") || project.cover_image.startsWith("https://")
+    ? project.cover_image
+    : pb.files.getUrl(project, project.cover_image);
+}
 
 // Resolve multiple videos
 const videoUrls: any[] = [];
@@ -77,14 +80,78 @@ if (project.videos) {
     : [project.videos];
   list.forEach((vid: any) => {
     if (vid) {
-      videoUrls.push(pb.files.getUrl(project, vid));
+      if (typeof vid === "string" && (vid.startsWith("http://") || vid.startsWith("https://"))) {
+        videoUrls.push(vid);
+      } else {
+        videoUrls.push(pb.files.getUrl(project, vid));
+      }
     }
   });
 }
+if (project.video_links) {
+  try {
+    const linksList = Array.isArray(project.video_links)
+      ? project.video_links
+      : JSON.parse(project.video_links);
+    linksList.forEach((linkUrl: any) => {
+      if (linkUrl && typeof linkUrl === "string" && linkUrl.trim()) {
+        videoUrls.push(linkUrl.trim());
+      }
+    });
+  } catch {
+    if (typeof project.video_links === "string" && project.video_links.trim()) {
+      videoUrls.push(project.video_links.trim());
+    }
+  }
+}
 
-const longFormVideoUrl = project.long_form_video
-  ? pb.files.getUrl(project, project.long_form_video)
-  : null;
+let longFormVideoUrl = project.long_form_video_link || null;
+if (!longFormVideoUrl && project.long_form_video) {
+  longFormVideoUrl = project.long_form_video.startsWith("http://") || project.long_form_video.startsWith("https://")
+    ? project.long_form_video
+    : pb.files.getUrl(project, project.long_form_video);
+}
+
+function getMediaDetails(url: string) {
+  if (!url) return null;
+  
+  // YouTube
+  const ytMatch = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+  if (ytMatch && ytMatch[1]) {
+    return {
+      type: 'youtube',
+      embedUrl: `https://www.youtube.com/embed/${ytMatch[1]}`,
+    };
+  }
+
+  // Vimeo
+  const vimeoMatch = url.match(/(?:vimeo\.com\/)(?:channels\/[^\/]+\/|groups\/[^\/]+\/album\/\d+\/video\/|showcase\/[^\/]+\/video\/|video\/|)(\d+)/i);
+  if (vimeoMatch && vimeoMatch[1]) {
+    return {
+      type: 'vimeo',
+      embedUrl: `https://player.vimeo.com/video/${vimeoMatch[1]}`,
+    };
+  }
+
+  // Check extensions
+  const cleanUrl = url.split('?')[0].toLowerCase();
+  if (cleanUrl.endsWith('.gif')) {
+    return { type: 'gif', url };
+  }
+  if (cleanUrl.endsWith('.mp4') || cleanUrl.endsWith('.webm') || cleanUrl.endsWith('.ogg') || cleanUrl.endsWith('.mov')) {
+    return { type: 'video', url };
+  }
+  if (cleanUrl.endsWith('.jpg') || cleanUrl.endsWith('.jpeg') || cleanUrl.endsWith('.png') || cleanUrl.endsWith('.webp') || cleanUrl.endsWith('.svg')) {
+    return { type: 'image', url };
+  }
+
+  // Default fallback
+  if (url.includes('/api/files/')) {
+    return { type: 'video', url };
+  }
+
+  return { type: 'video', url };
+}
 ---
 
 <BaseLayout
@@ -153,7 +220,7 @@ const longFormVideoUrl = project.long_form_video
               rel="noopener noreferrer"
               class="btn btn-primary btn-sm"
             >
-              🔗 Live Demo
+              Live Demo
             </a>
           )
         }
@@ -165,7 +232,7 @@ const longFormVideoUrl = project.long_form_video
       techStack.length > 0 && (
         <div>
           <h2 class="text-sm font-semibold uppercase opacity-60 mb-2">
-            Technologies Used
+            Tech Stack
           </h2>
           <div class="flex flex-wrap gap-2">
             {techStack.map((tech) => (
@@ -217,18 +284,36 @@ const longFormVideoUrl = project.long_form_video
         <div class="border-t border-neutral pt-6 space-y-4">
           <h2 class="text-xl font-bold">Project Demos</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {videoUrls.map((videoUrl, index) => (
-              <div class="space-y-1">
-                <span class="text-xs opacity-60 font-mono">
-                  Demo Video #{index + 1}
-                </span>
-                <video
-                  src={videoUrl}
-                  controls
-                  class="w-full rounded-lg shadow border border-neutral/50 bg-neutral/20"
-                />
-              </div>
-            ))}
+            {videoUrls.map((videoUrl, index) => {
+              const media = getMediaDetails(videoUrl);
+              return (
+                <div class="space-y-1">
+                  <span class="text-xs opacity-60 font-mono">
+                    Demo Media #{index + 1}
+                  </span>
+                  {media?.type === 'youtube' || media?.type === 'vimeo' ? (
+                    <iframe
+                      src={media.embedUrl}
+                      class="w-full aspect-video rounded-lg shadow border border-neutral/50 bg-neutral/20"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    />
+                  ) : media?.type === 'gif' || media?.type === 'image' ? (
+                    <img
+                      src={media.url}
+                      alt={`Demo Media #${index + 1}`}
+                      class="w-full rounded-lg shadow border border-neutral/50 bg-neutral/20 object-cover aspect-video"
+                    />
+                  ) : (
+                    <video
+                      src={media?.url}
+                      controls
+                      class="w-full rounded-lg shadow border border-neutral/50 bg-neutral/20 aspect-video"
+                    />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       )
@@ -239,12 +324,36 @@ const longFormVideoUrl = project.long_form_video
       longFormVideoUrl && (
         <div class="border-t border-neutral pt-6 space-y-3">
           <h2 class="text-xl font-bold">Full Video Walkthrough</h2>
-          <div class="w-full">
-            <video
-              src={longFormVideoUrl}
-              controls
-              class="w-full rounded-lg shadow-md border border-neutral bg-neutral/20"
-            />
+          <div class="w-full font-sans">
+            {(() => {
+              const media = getMediaDetails(longFormVideoUrl);
+              if (media?.type === 'youtube' || media?.type === 'vimeo') {
+                return (
+                  <iframe
+                    src={media.embedUrl}
+                    class="w-full aspect-video rounded-lg shadow-md border border-neutral bg-neutral/20"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  />
+                );
+              } else if (media?.type === 'gif' || media?.type === 'image') {
+                return (
+                  <img
+                    src={media.url}
+                    alt="Walkthrough"
+                    class="w-full rounded-lg shadow-md border border-neutral bg-neutral/20"
+                  />
+                );
+              } else {
+                return (
+                  <video
+                    src={media?.url}
+                    controls
+                    class="w-full rounded-lg shadow-md border border-neutral bg-neutral/20"
+                  />
+                );
+              }
+            })()}
           </div>
         </div>
       )
