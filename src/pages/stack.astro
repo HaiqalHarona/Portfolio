@@ -32,7 +32,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <div class="p-5">
         <p class="opacity-80 leading-relaxed text-base-content">
           <span class="text-accent font-bold mr-2 terminal-prompt"
-            >user@homelab:~#</span
+            >Nino@homelab:~#</span
           >
           <span class="stdout-line"
             >I put this environment together using older repurposed thin clients
@@ -80,7 +80,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
         </div>
         <div
-          class="border border-neutral/40 bg-neutral/10 p-1 boot-sequence"
+          class="border border-neutral/40 bg-neutral/10 p-1 flex flex-col justify-center boot-sequence"
           style="--delay: 200ms;"
         >
           <div
@@ -96,6 +96,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               data-zoom-src="/images/compose/homarr.png"
             />
           </div>
+          <p class="text-[10px] text-primary/70 mt-2 px-1">
+            > status: active
+          </p>
         </div>
       </div>
     </div>
@@ -273,6 +276,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               data-zoom-src="/images/compose/tailscale.png"
             />
           </div>
+          <p class="text-[10px] text-success/70 mt-2 px-1">
+            > status: connected
+          </p>
         </div>
       </div>
 
@@ -287,8 +293,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <p class="text-sm opacity-90 mb-4 leading-relaxed stdout-line">
               Because I am securely tunneled into the network, my local development
               environment connects directly to my remote development and
-              production databases (a cardinal sin in enterprise engineering,
-              but a highly efficient guilty pleasure for a solo dev).
+              production databases (a sin in enterprise engineering, but a highly
+              efficient guilty pleasure for a solo dev).
             </p>
             <p
               class="text-sm opacity-90 leading-relaxed text-success/80 stdout-line"
@@ -310,11 +316,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           >
             <img
               src="/images/compose/database.png"
-              alt="PocketBase Database Schema"
+              alt="Some Examples of Database Management Interfaces (Remote)"
               class="w-full h-auto object-cover border border-neutral/20 grayscale-[20%] group-hover:grayscale-0 transition-all duration-300"
               data-zoom-src="/images/compose/database.png"
             />
           </div>
+          <p class="text-[10px] text-success/70 mt-2 px-1">
+            > status: synchronized
+          </p>
         </div>
       </div>
     </div>
@@ -393,7 +402,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       stdoutObserver.observe(container);
     });
 
-    // 2. Lightbox Logic
+    // Lightbox Logic
     const lightbox = document.getElementById("image-lightbox");
     const lightboxImg = document.getElementById(
       "lightbox-img",
@@ -462,7 +471,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   /* Main header cursor and Lightbox cursor always blink relaxedly */
   #main-cursor,
   .blinking-cursor {
-    animation: terminal-blink 1s step-end infinite;
+    animation: terminal-blink 2s step-end infinite;
   }
 
   /* Boot Sequence for Images/Headers */
@@ -487,7 +496,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: inline-block;
     margin-left: 8px;
     color: currentColor;
-    animation: terminal-blink 1s step-end infinite;
+    animation: terminal-blink 1.5s step-end infinite;
     vertical-align: baseline;
   }
 
@@ -518,7 +527,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: inline-block;
     margin-left: 6px;
     color: currentColor;
-    animation: terminal-blink 1s step-end infinite;
+    animation: terminal-blink 1.5s step-end infinite;
     vertical-align: baseline;
   }
 

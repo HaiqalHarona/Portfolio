@@ -1,64 +1,316 @@
 ---
+// src/pages/index.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HorizontalCard from "../components/HorizontalCard.astro";
-import { pb } from "../lib/pocketbase";
-
-let featuredProjects: any[] = [];
-try {
-  const result = await pb.collection("projects").getList(1, 3, {
-    filter: "is_featured = true",
-    sort: "-created",
-  });
-  featuredProjects = result.items;
-  if (featuredProjects.length === 0) {
-    const fallback = await pb.collection("projects").getList(1, 3, {
-      sort: "-created",
-    });
-    featuredProjects = fallback.items;
-  }
-} catch (e) {
-  console.error("Failed to fetch featured projects from PocketBase:", e);
-}
 ---
 
 <BaseLayout sideBarActiveItemID="home" currentPath="/">
-  <div class="pb-12 mt-5">
-    <div class="text-xl py-1">Hey there 👋</div>
-    <div class="text-5xl font-bold">I'm Your Name</div>
-    <div class="text-3xl py-3 font-bold">Software Engineer & Developer</div>
-    <div class="py-2">
-      <text class="text-lg">
-        Welcome to my personal portfolio. I build high-quality web applications and software solutions. 
-        Feel free to browse my projects and professional resume.
-      </text>
+  <div class="max-w-5xl mx-auto px-4 font-mono min-h-[85vh] flex flex-col">
+    <!-- Hero Section with Setup Image -->
+    <div
+      class="mt-12 mb-20 grid grid-cols-1 lg:grid-cols-5 gap-10 items-center boot-sequence"
+      style="--delay: 0ms;"
+    >
+      <!-- Text Content -->
+      <div class="lg:col-span-3 order-2 lg:order-1">
+        <div class="flex items-center text-primary mb-4 text-sm">
+          <span class="mr-2">>_</span> ./hello.sh
+        </div>
+        <h1
+          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-base-content mb-4 tracking-tight flex items-center whitespace-nowrap"
+        >
+          <span id="typewriter-text">Hi, I'm Haiqal</span><span
+            id="main-cursor"
+            class="ml-1 inline-block w-4 h-[1em] bg-primary"></span>
+        </h1>
+        <h2
+          class="text-xl md:text-2xl font-bold opacity-80 text-secondary mb-6"
+        >
+          Backend-Minded Developer. <br>Full-Stack Capable.
+        </h2>
+       <p class="text-base opacity-70 max-w-xl leading-relaxed mb-8">
+  I build full-stack apps from scratch simply because it's fun. I know my way around DevOps, databases, and frontend state management, and I can replicate a UI layout without much trouble. But my real passion (and where I actually feel most at home) is engineering the backend systems underneath.
+</p>
+
+        <div class="flex flex-wrap gap-4 text-sm">
+          <a
+            href="/projects"
+            class="border border-primary text-primary px-6 py-2.5 hover:bg-primary/10 transition-colors"
+          >
+            > execute view_projects
+          </a>
+          <a
+            href="/stack"
+            class="border border-neutral text-neutral-content px-6 py-2.5 hover:bg-neutral/20 transition-colors"
+          >
+            > ssh into_homelab
+          </a>
+          <a
+            href="/cv"
+            class="border border-secondary text-secondary px-6 py-2.5 hover:bg-secondary/10 transition-colors"
+          >
+            > cat cv.md
+          </a>
+          <a
+            href="/contact"
+            class="border border-accent text-accent px-6 py-2.5 hover:bg-accent/10 transition-colors"
+          >
+            > ./ping.sh
+          </a>
+        </div>
+      </div>
+
+      <!-- The Hooded Setup Picture -->
+      <div
+        class="lg:col-span-2 order-1 lg:order-2 boot-sequence"
+        style="--delay: 200ms;"
+      >
+        <div
+          class="border border-neutral bg-[#0a0a0a] shadow-[0_0_20px_rgba(34,211,238,0.05)] flex flex-col"
+        >
+          <!-- Terminal/IDE Tab Header -->
+          <div
+            class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center"
+          >
+            <div class="flex space-x-1.5 mr-3">
+              <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56]"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
+              <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F]"></div>
+            </div>
+            <span>preview: me.jpg</span>
+          </div>
+
+          <div class="relative overflow-hidden group">
+            <img
+              src="/images/index/me.jpg"
+              alt="Haiqal at his scuffed setup"
+              class="w-full h-auto object-cover aspect-square md:aspect-[4/5] transition-all duration-500"
+            />
+            <div
+              class="absolute bottom-2 right-2 bg-black/70 px-2 py-1 text-[10px] text-primary/70 border border-primary/20 backdrop-blur-sm"
+            >
+              > status: cooked
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="mt-8">
-      <a class="btn" href="mailto:your.email@example.com"> Let's connect!</a>
-      <a href="/cv" class="btn btn-outline ml-5">
-        View Resume
-      </a>
+
+    <!-- About Me Section (Terminal Window) -->
+    <div
+      class="border border-neutral bg-[#0a0a0a] mb-auto text-sm shadow-[0_0_15px_rgba(34,211,238,0.05)] stdout-container"
+    >
+      <div
+        class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center"
+      >
+        <div class="flex space-x-1.5 mr-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F]"></div>
+        </div>
+        <span>cat whoami.txt</span>
+      </div>
+      <div class="p-6 md:p-8">
+        <p class="opacity-90 leading-relaxed text-base-content mb-5">
+          <span class="text-accent font-bold mr-2 terminal-prompt"
+            >nino@haiqal:~#</span
+          >
+          <span class="stdout-line"
+            >I technically do full-stack, but my natural habitat is the backend.</span
+          >
+        </p>
+        <p
+          class="opacity-90 leading-relaxed text-base-content mb-5 stdout-line"
+        >
+          I spent a whole year taking UI/UX and graphic design modules in
+          school, which mostly just taught me that I shouldn't be a designer. I
+          can replicate a Figma files perfectly, review AI-generated layouts, and
+          optimize complex frontend state management. But if you ask me to
+          invent a logo from scratch, yea im absolute Buns at it.
+        </p>
+        <p
+          class="opacity-90 leading-relaxed text-base-content mb-5 stdout-line"
+        >
+          My real strength is the backend architecture, handling everything from
+          DevOps to database management. I discovered Laravel in 2024 and it is
+          hands-down the best framework I've ever used <span
+            class="text-secondary/80 italic"
+            >(not shitting on other frameworks, just absolutely glazing Laravel)</span
+          >. Whether I'm architecting strict RESTful APIs or building heavy
+          monoliths, it just works beautifully. When I'm not writing PHP, I'm
+          usually breaking (and fixing) my homelab servers.
+        </p>
+        <p
+          class="opacity-90 leading-relaxed text-success/90 stdout-line font-bold"
+        >
+          > Status [2026]: Honestly barely writing code from scratch these days.
+          Mostly just prompting, reviewing the AI's homework, and tweaking it to
+          actually work.
+        </p>
+      </div>
     </div>
   </div>
-
-  <div>
-    <div class="text-3xl w-full font-bold mb-2">My last projects {"</>"}</div>
-  </div>
-
-  {featuredProjects.length === 0 ? (
-    <p class="text-base-content/50 italic mb-5">No projects found.</p>
-  ) : (
-    featuredProjects.map((project) => (
-      <>
-        <HorizontalCard
-          title={project.title}
-          img={project.cover_image ? pb.files.getUrl(project, project.cover_image) : "/post_img.webp"}
-          desc={project.description}
-          url={`/projects/${project.id}`}
-          badge={project.is_featured ? "Featured" : undefined}
-        />
-        <div class="divider my-0" />
-      </>
-    ))
-  )}
 </BaseLayout>
 
+<script>
+  document.addEventListener("astro:page-load", () => {
+    // Typewriter effect for Hero Title
+    const textElement = document.getElementById("typewriter-text");
+    if (textElement) {
+      const fullText = "Hi, I'm Haiqal";
+      const prefix = "Hi, I'm ";
+      const namePart = "Haiqal";
+
+      let isDeleting = false;
+      let textIndex = 0;
+      let phase = "full";
+
+      function typeWriter() {
+        if (!textElement || !document.contains(textElement)) return;
+
+        let currentText = "";
+        if (phase === "full") {
+          currentText = fullText.substring(0, textIndex);
+          textElement.textContent = currentText;
+
+          if (textIndex === fullText.length) {
+            phase = "loop";
+            isDeleting = true;
+            textIndex = namePart.length;
+            setTimeout(typeWriter, 3000);
+            return;
+          }
+          textIndex++;
+          setTimeout(typeWriter, 100 + Math.random() * 50);
+        } else if (phase === "loop") {
+          currentText = prefix + namePart.substring(0, textIndex);
+          textElement.textContent = currentText;
+
+          if (isDeleting) {
+            if (textIndex === 0) {
+              isDeleting = false;
+              setTimeout(typeWriter, 500);
+              return;
+            }
+            textIndex--;
+            setTimeout(typeWriter, 50 + Math.random() * 50);
+          } else {
+            if (textIndex === namePart.length) {
+              isDeleting = true;
+              setTimeout(typeWriter, 3000);
+              return;
+            }
+            textIndex++;
+            setTimeout(typeWriter, 150 + Math.random() * 50);
+          }
+        }
+      }
+
+      textElement.textContent = "";
+      setTimeout(typeWriter, 500);
+    }
+
+    // Terminal stdout Gen Animation Logic
+    const stdoutObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (
+            entry.isIntersecting &&
+            !entry.target.classList.contains("executed")
+          ) {
+            entry.target.classList.add("executed");
+
+            const lines = entry.target.querySelectorAll(".stdout-line");
+            let delay = 0;
+
+            lines.forEach((line, index) => {
+              setTimeout(() => {
+                if (index > 0) lines[index - 1].classList.remove("printing");
+                line.classList.add("printed", "printing");
+
+                if (index === lines.length - 1) {
+                  setTimeout(() => {
+                    line.classList.remove("printing");
+                    line.classList.add("finished");
+                  }, 800);
+                }
+              }, delay);
+              delay += Math.floor(Math.random() * 90) + 30;
+            });
+          }
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+
+    document.querySelectorAll(".stdout-container").forEach((container) => {
+      stdoutObserver.observe(container);
+    });
+  });
+</script>
+
+<style>
+  /* Standard terminal blink */
+  @keyframes terminal-blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  #main-cursor {
+    animation: terminal-blink 1s step-end infinite;
+  }
+
+  .boot-sequence {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: var(--delay);
+  }
+  @keyframes fade-up {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* --- Terminal Execution Styles --- */
+  .stdout-container:not(.executed) .terminal-prompt::after {
+    content: "█";
+    display: inline-block;
+    margin-left: 8px;
+    color: currentColor;
+    animation: terminal-blink 1s step-end infinite;
+    vertical-align: baseline;
+  }
+
+  .stdout-line {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .stdout-line.printed {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .stdout-line.printing::after {
+    content: "█";
+    display: inline-block;
+    margin-left: 6px;
+    color: currentColor;
+    vertical-align: baseline;
+  }
+
+  .stdout-line.finished::after {
+    content: "█";
+    display: inline-block;
+    margin-left: 6px;
+    color: currentColor;
+    animation: terminal-blink 1s step-end infinite;
+    vertical-align: baseline;
+  }
+</style>

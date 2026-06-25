@@ -98,17 +98,19 @@ const getActiveLanguage = () => {
 };
 ---
 
-<aside class="w-64 min-h-screen bg-base-100 border-r border-neutral font-mono text-sm flex flex-col justify-between text-base-content/80">
+<aside id="ide-sidebar" class="w-[300px] h-full bg-base-100 border-r border-neutral font-mono text-sm flex flex-col justify-between text-base-content/80 relative shrink-0">
   
-  <div class="flex-grow flex flex-col">
-    <div class="p-4 text-xs font-bold opacity-60 tracking-widest uppercase flex justify-between items-center">
+  <div id="sidebar-resizer" class="absolute top-0 right-0 w-1.5 h-full cursor-col-resize hover:bg-blue-500/50 z-50"></div>
+
+  <div class="flex-grow flex flex-col overflow-hidden">
+    <div class="p-4 text-xs font-bold opacity-60 tracking-widest uppercase flex justify-between items-center shrink-0">
       <span>Explorer</span>
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-60 cursor-pointer hover:opacity-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
       </svg>
     </div>
 
-    <div class="px-2 select-none flex-grow">
+    <div class="px-2 select-none flex-grow overflow-y-auto">
       <!-- Workspace Root -->
       <div class="flex items-center px-2 py-1 mb-1">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mr-1 opacity-70 transform rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -279,23 +281,20 @@ const getActiveLanguage = () => {
             <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
             <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
           </svg>
-          0
+          99
         </span>
         <span class="flex items-center gap-1 hover:bg-blue-600/50 px-1.5 py-0.5 rounded cursor-pointer text-white font-normal">
           <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M8.865 1.52c-.18-.317-.51-.52-.865-.52s-.685.203-.865.52L.18 13.982C.006 14.288-.04 14.65.05 14.992c.09.34.302.628.59.808C.887 15.95 1.187 16 1.487 16h13.026c.3 0 .6-.05.847-.2.288-.18.5-.468.59-.808.09-.342.044-.704-.13-1.01L8.865 1.52zM8 2c.12 0 .227.067.287.172l6.82 12.462c.057.102.042.222-.014.304-.056.082-.143.162-.243.162H1.15c-.1 0-.187-.08-.243-.162-.056-.082-.07-.202-.014-.304L7.713 2.172C7.773 2.067 7.88 2 8 2z"/>
             <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
           </svg>
-          0
+          19
         </span>
       </div>
     </div>
 
     <!-- Right Section -->
     <div class="flex items-center space-x-2 opacity-90 pr-1 font-normal">
-      <span class="hover:bg-blue-600/50 px-1.5 py-0.5 rounded cursor-pointer font-normal text-xs">
-        Ln 1, Col 1
-      </span>
     </div>
   </div>
 </aside>
@@ -314,15 +313,6 @@ const getActiveLanguage = () => {
 
   details[open] > summary svg.chevron {
     transform: rotate(90deg);
-  }
-
-  .file-link:hover .file-icon-container {
-    transform: scale(1.2) rotate(15deg);
-    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .file-icon-container {
-    transition: transform 0.2s ease;
   }
 
   @keyframes icon-open-rotate {
@@ -347,3 +337,36 @@ const getActiveLanguage = () => {
     animation: spin-sync 1.2s linear infinite;
   }
 </style>
+
+<script>
+  // Add resizer logic
+  const sidebar = document.getElementById('ide-sidebar');
+  const resizer = document.getElementById('sidebar-resizer');
+  
+  if (sidebar && resizer) {
+    let isResizing = false;
+    
+    resizer.addEventListener('mousedown', (e) => {
+      isResizing = true;
+      document.body.style.cursor = 'col-resize';
+      sidebar.style.userSelect = 'none';
+      sidebar.style.transition = 'none'; // disable transitions while dragging
+      e.preventDefault();
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (!isResizing) return;
+      // limit the width between 160px and 800px
+      const newWidth = Math.min(Math.max(e.clientX, 160), 800);
+      sidebar.style.width = `${newWidth}px`;
+    });
+    
+    document.addEventListener('mouseup', () => {
+      if (isResizing) {
+        isResizing = false;
+        document.body.style.cursor = '';
+        sidebar.style.userSelect = '';
+      }
+    });
+  }
+</script>
