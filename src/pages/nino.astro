@@ -1,0 +1,100 @@
+---
+// src/pages/nino.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout sideBarActiveItemID="" currentPath="/nino">
+  <div class="max-w-4xl mx-auto px-4 font-mono min-h-[85vh] flex flex-col relative overflow-hidden">
+    
+    <!-- Secret Background FX -->
+    <div class="absolute inset-0 pointer-events-none opacity-5 bg-[radial-gradient(circle_at_center,_#ff80bf_0%,_transparent_70%)]"></div>
+
+    <!-- Page Header -->
+    <div class="mt-12 mb-10 boot-sequence z-10" style="--delay: 0ms;">
+      <h1 class="text-5xl font-bold text-[#ff80bf] mb-2 flex items-center drop-shadow-[0_0_10px_rgba(255,128,191,0.5)]">
+        CLASSIFIED: NINO<span class="ml-2 inline-block w-4 h-10 bg-[#ff80bf] animate-pulse"></span>
+      </h1>
+      <p class="text-xl opacity-80 text-[#ffb3d9]">> Access granted. Welcome to the hidden sector.</p>
+    </div>
+
+    <!-- The Secret Content -->
+    <div class="border border-[#ff80bf]/30 bg-[#1a0f14] mb-8 text-sm shadow-[0_0_30px_rgba(255,128,191,0.15)] stdout-container z-10 rounded-md overflow-hidden relative">
+      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#ff80bf] to-transparent"></div>
+      
+      <div class="bg-[#2d1a24] px-3 py-2 text-xs text-[#ffb3d9]/70 border-b border-[#ff80bf]/20 flex items-center justify-between">
+        <div class="flex items-center">
+          <div class="flex space-x-1.5 mr-3">
+            <div class="w-2.5 h-2.5 rounded-full bg-[#ff4d4d]"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-[#ffcc00]"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-[#ff80bf]"></div>
+          </div>
+          <span>./best_girl.sh -v</span>
+        </div>
+        <span class="opacity-50">PID: 55555</span>
+      </div>
+      
+      <div class="p-6 md:p-8">
+        <p class="leading-relaxed text-[#ffb3d9] mb-5">
+          <span class="text-[#ff80bf] font-bold mr-2 terminal-prompt">root@nino:~#</span>
+          <span class="stdout-line">Initializing Tsundere Protocol... [OK]</span>
+        </p>
+        <p class="leading-relaxed text-[#ffb3d9] mb-5 stdout-line">
+          Loading culinary skills... [OK]<br/>
+          Overriding default aesthetic with primary pink theme... [OK]<br/>
+          Bypassing standard responses...
+        </p>
+        <p class="leading-relaxed text-white stdout-line border-l-2 border-[#ff80bf] pl-4 italic bg-[#ff80bf]/5 py-2">
+          "It's not like I wanted you to find this page or anything! Don't get the wrong idea!"
+        </p>
+      </div>
+    </div>
+
+    <div class="flex-grow"></div>
+
+    <!-- Back to normal -->
+    <div class="mt-20 py-6 border-t border-[#ff80bf]/20 flex justify-between items-center text-xs font-sans z-10">
+      <div class="opacity-40 font-mono text-[#ffb3d9]">
+        > warning: theme instability detected
+      </div>
+      
+      <a 
+        href="/about-me" 
+        class="text-neutral-400 hover:text-white transition-colors duration-300 font-mono cursor-pointer px-2 py-1"
+        title="Return to standard theme"
+      >
+        [ return_to_base.sh ]
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !entry.target.classList.contains("executed")) {
+          entry.target.classList.add("executed");
+          const lines = entry.target.querySelectorAll(".stdout-line");
+          let delay = 0;
+          lines.forEach((line) => {
+            setTimeout(() => {
+              line.style.opacity = "1";
+              line.style.visibility = "visible";
+            }, delay);
+            delay += 600; // Slower dramatic typing for the secret page
+          });
+        }
+      });
+    });
+    document.querySelectorAll(".stdout-container").forEach((c) => observer.observe(c));
+  });
+</script>
+
+<style>
+  .stdout-line { opacity: 0; visibility: hidden; transition: opacity 0.4s; }
+  
+  /* Global theme overrides just for this page */
+  :global(body) {
+    --b1: 20 15% 10%; /* Darker background with slight pink tint */
+  }
+</style>

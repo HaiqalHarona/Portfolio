@@ -1,75 +1,227 @@
 ---
+// src/pages/about-me.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="About Me" sideBarActiveItemID="about-me" currentPath="/about-me">
-  <div class="max-w-4xl mx-auto px-4 py-8 font-mono">
-    <!-- Breadcrumbs / File Header -->
-    <div class="text-xs opacity-50 mb-6 flex items-center gap-2">
-      <span>root</span>
-      <span>/</span>
-      <span class="text-teal-400">about-me.md</span>
-    </div>
-
-    <!-- Markdown Render Area -->
-    <div class="bg-base-200/40 border border-neutral/50 rounded-xl p-6 md:p-10 shadow-md prose prose-invert max-w-none">
-      <h1 class="text-3xl md:text-4xl font-bold text-primary border-b border-neutral pb-4 mb-6 flex items-center gap-2">
-        # About Me
+<BaseLayout sideBarActiveItemID="about-me" currentPath="/about-me">
+  <div class="max-w-4xl mx-auto px-4 font-mono min-h-[85vh] flex flex-col mb-20">
+    
+    <!-- Page Header -->
+    <div class="mt-12 mb-10 boot-sequence" style="--delay: 0ms;">
+      <h1 class="text-4xl font-bold text-primary mb-2 flex items-center">
+        ./whoami.sh<span id="main-cursor" class="ml-1 inline-block w-3 h-8 bg-primary"></span>
       </h1>
+      <p class="text-lg opacity-80 text-secondary">The human behind the keyboard.</p>
+    </div>
 
-      <p class="text-base-content/85 leading-relaxed text-lg mb-6">
-        Hi there! I'm <strong>Haiqal Bin Harona</strong>, a backend-focused full-stack developer, homelab enthusiast, and automation builder based in Singapore. I build software systems from the ground up because I enjoy solving complex logic and infrastructure puzzles.
-      </p>
-
-      <h2 class="text-2xl font-bold text-secondary border-b border-neutral/50 pb-2 mb-4 mt-8">
-        ## Who I Am & My Philosophy
-      </h2>
-      <p class="text-base-content/85 leading-relaxed mb-4">
-        I believe in understanding how systems work end-to-end. While I can build fully responsive frontends, my core passion lies in the architecture of what's under the hood—databases, reverse proxies, container orchestration, and server-side logic.
-      </p>
-      <ul class="list-disc list-inside space-y-2 text-base-content/80 mb-6">
-        <li><strong>Infrastructure-First:</strong> My home network runs containerized servers to host APIs, database instances, and secure VPN tunnels under real-world conditions.</li>
-        <li><strong>Automation Mindset:</strong> If a task is repetitive, I'll automate it using Python, Playwright, or UiPath.</li>
-        <li><strong>Continuous Learning:</strong> Currently pursuing a Diploma in Infocomm Media Engineering at Nanyang Polytechnic, exploring modern architecture daily.</li>
-      </ul>
-
-      <h2 class="text-2xl font-bold text-secondary border-b border-neutral/50 pb-2 mb-4 mt-8">
-        ## Current Tech Stack & Homelab
-      </h2>
-      <p class="text-base-content/85 leading-relaxed mb-4">
-        Here are the technologies I actively use and manage:
-      </p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm font-mono mb-6">
-        <div class="bg-neutral/20 border border-neutral/30 rounded-lg p-4">
-          <h3 class="text-accent font-bold mb-2">Backend & APIs</h3>
-          <ul class="space-y-1 text-base-content/75">
-            <li>- PHP (Laravel, Livewire)</li>
-            <li>- Node.js & Express</li>
-            <li>- PostgreSQL, MySQL, Redis</li>
-            <li>- RESTful API design & Auth</li>
-          </ul>
+    <!-- Section 1: The Origin Story -->
+    <div class="border border-neutral bg-[#0a0a0a] mb-8 text-sm shadow-[0_0_15px_rgba(34,211,238,0.05)] stdout-container">
+      <div class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center">
+        <div class="flex space-x-1.5 mr-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F]"></div>
         </div>
-        <div class="bg-neutral/20 border border-neutral/30 rounded-lg p-4">
-          <h3 class="text-accent font-bold mb-2">DevOps & Homelab</h3>
-          <ul class="space-y-1 text-base-content/75">
-            <li>- Docker & Portainer</li>
-            <li>- Nginx Proxy Manager</li>
-            <li>- Cloudflare Tunnels & Security</li>
-            <li>- System Monitoring (Dashdot, Homarr)</li>
-          </ul>
-        </div>
+        <span>cat origin_story.md</span>
       </div>
-
-      <h2 class="text-2xl font-bold text-secondary border-b border-neutral/50 pb-2 mb-4 mt-8">
-        ## Get In Touch
-      </h2>
-      <p class="text-base-content/85 leading-relaxed mb-6">
-        Want to talk about full-stack engineering, automation, or host-it-yourself infrastructure? Reach out to me:
-      </p>
-      <div class="flex flex-wrap gap-4">
-        <a href="/contact" class="btn btn-primary btn-sm">> ./ping.sh</a>
-        <a href="/cv" class="btn btn-outline btn-sm">> cat cv.md</a>
+      <div class="p-6 md:p-8">
+        <p class="opacity-90 leading-relaxed text-base-content mb-5">
+          <span class="text-accent font-bold mr-2 terminal-prompt">guest@haiqal:~#</span>
+          <span class="stdout-line">Formal education gave me the fundamentals, but my real learning always happened in the terminal.</span>
+        </p>
+        <p class="opacity-90 leading-relaxed text-base-content mb-5 stdout-line">
+          Writing isolated code for assignments was fine, but I got way more interested in where that code actually lives and how it runs in the wild. That curiosity dragged me out of simple frontend tutorials and threw me down the rabbit hole of backend architecture, Linux servers, and networking.
+        </p>
+        <p class="opacity-90 leading-relaxed text-base-content stdout-line">
+          > I don't just want to code the app; I want to build the engine that keeps it alive.
+        </p>
       </div>
     </div>
+
+    <!-- Section 2: Current Workflow -->
+    <div class="border border-neutral bg-[#0a0a0a] mb-8 text-sm shadow-[0_0_15px_rgba(34,211,238,0.05)] stdout-container">
+      <div class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center">
+        <div class="flex space-x-1.5 mr-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F]"></div>
+        </div>
+        <span>cat workflow.yml</span>
+      </div>
+      <div class="p-6 md:p-8">
+        <p class="opacity-90 leading-relaxed text-base-content mb-5">
+          <span class="text-accent font-bold mr-2 terminal-prompt">guest@haiqal:~#</span>
+          <span class="stdout-line">To build complex full-stack systems solo, I've had to get ruthlessly efficient.</span>
+        </p>
+        <p class="opacity-90 leading-relaxed text-base-content mb-5 stdout-line">
+          I'll be real: I barely write boilerplate code from scratch these days. I use AI to do the heavy lifting for the syntax, which lets me focus on the actual fun stuff—planning the database schemas, connecting the logic, and making sure the overall architecture makes sense.
+        </p>
+        <p class="opacity-90 leading-relaxed text-success/90 stdout-line font-bold">
+          > Status: Less "Code Typist", more "Prompting, reviewing, and fixing the AI's mistakes so it actually works."
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 3: Engineering Philosophy -->
+    <div class="border border-neutral bg-[#0a0a0a] mb-8 text-sm shadow-[0_0_15px_rgba(34,211,238,0.05)] stdout-container">
+      <div class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center">
+        <div class="flex space-x-1.5 mr-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F]"></div>
+        </div>
+        <span>cat philosophy.txt</span>
+      </div>
+      <div class="p-6 md:p-8">
+        <p class="opacity-90 leading-relaxed text-base-content mb-5">
+          <span class="text-accent font-bold mr-2 terminal-prompt">guest@haiqal:~#</span>
+          <span class="stdout-line">Two things are absolute facts: Laravel is goated, and I am not a designer.</span>
+        </p>
+        <p class="opacity-90 leading-relaxed text-base-content mb-5 stdout-line">
+          Taking a whole year of UI/UX modules back in school basically just confirmed I should never be trusted to make a logo from scratch. I can copy a Figma design perfectly, but my brain is just wired for the backend. 
+        </p>
+        <p class="opacity-90 leading-relaxed text-base-content stdout-line">
+          Since I found Laravel, it's my go-to for basically everything. It handles APIs and data so well it almost feels like cheating. Hook that up to my homelab, and I've got my ideal playground.
+        </p>
+      </div>
+    </div>
+<!-- Section 4: Offline -->
+    <div class="border border-neutral bg-[#0a0a0a] mb-8 text-sm shadow-[0_0_15px_rgba(34,211,238,0.05)] stdout-container">
+      <div class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center">
+        <div class="flex space-x-1.5 mr-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F]"></div>
+        </div>
+        <span>whoami --offline</span>
+      </div>
+      <div class="p-6 md:p-8">
+        <p class="opacity-90 leading-relaxed text-base-content mb-5">
+          <span class="text-accent font-bold mr-2 terminal-prompt">guest@haiqal:~#</span>
+          <span class="stdout-line">When I'm away from the keyboard...</span>
+        </p>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="opacity-90 leading-relaxed text-base-content stdout-line">
+            <span class="text-primary font-bold">Status:</span> Upgrading the homelab
+          </div>
+          <div class="opacity-90 leading-relaxed text-base-content stdout-line">
+            <span class="text-primary font-bold">Hardware:</span> Salvaged office workstations
+          </div>
+          <div class="opacity-90 leading-relaxed text-base-content stdout-line sm:col-span-2">
+            <span class="text-primary font-bold">Hobbies:</span> ["pc_part_hunting", "homelab_window_shopping", "home_appliance_shopping", "anime_&_manga", "gaming"]
+          </div>
+          <div class="opacity-90 leading-relaxed text-base-content stdout-line">
+            <span class="text-primary font-bold">Side_Quests: </span>Salvaging hardware,<a href="/nino" class="hover:text-[#ff80bf] hover:bg-[#ff80bf]/10 transition-colors duration-300 rounded px-1 cursor-pointer" title="Execute classified payload">Nino</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spacer to push the footer down -->
+    <div class="flex-grow"></div>
+
+    <!-- The Footer -->
+    <div class="mt-10 py-6 border-t border-neutral/30 flex justify-between items-center text-xs font-sans relative">
+      <div class="opacity-40 font-mono">
+        > system_uptime: optimal
+      </div>
+    </div>
+
   </div>
 </BaseLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    // Terminal stdout Gen Animation Logic
+    const stdoutObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('executed')) {
+          entry.target.classList.add('executed'); 
+          
+          const lines = entry.target.querySelectorAll('.stdout-line');
+          let delay = 0;
+          
+          lines.forEach((line, index) => {
+            setTimeout(() => {
+              if (index > 0) lines[index - 1].classList.remove('printing');
+              line.classList.add('printed', 'printing');
+              
+              if (index === lines.length - 1) {
+                setTimeout(() => {
+                  line.classList.remove('printing');
+                  line.classList.add('finished'); 
+                }, 800);
+              }
+            }, delay);
+            // Randomize typing speed for realism
+            delay += Math.floor(Math.random() * 90) + 30; 
+          });
+        }
+      });
+    }, { rootMargin: "0px 0px -10% 0px" });
+
+    document.querySelectorAll('.stdout-container').forEach(container => {
+      stdoutObserver.observe(container);
+    });
+  });
+</script>
+
+<style>
+  /* Standard terminal blink */
+  @keyframes terminal-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  #main-cursor {
+    animation: terminal-blink 1s step-end infinite;
+  }
+
+  .boot-sequence {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: var(--delay);
+  }
+  @keyframes fade-up {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- Terminal Execution Styles --- */
+  .stdout-container:not(.executed) .terminal-prompt::after {
+    content: '█';
+    display: inline-block;
+    margin-left: 8px;
+    color: currentColor;
+    animation: terminal-blink 1s step-end infinite;
+    vertical-align: baseline;
+  }
+
+  .stdout-line {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .stdout-line.printed {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .stdout-line.printing::after {
+    content: '█';
+    display: inline-block;
+    margin-left: 6px;
+    color: currentColor;
+    vertical-align: baseline;
+  }
+
+  .stdout-line.finished::after {
+    content: '█';
+    display: inline-block;
+    margin-left: 6px;
+    color: currentColor;
+    animation: terminal-blink 1s step-end infinite;
+    vertical-align: baseline;
+  }
+</style>
