@@ -1,100 +1,306 @@
 ---
 // src/pages/nino.astro
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseHead from "../components/BaseHead.astro";
+import { ViewTransitions } from "astro:transitions";
+import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
 ---
 
-<BaseLayout sideBarActiveItemID="" currentPath="/nino">
-  <div class="max-w-4xl mx-auto px-4 font-mono min-h-[85vh] flex flex-col relative overflow-hidden">
+<!doctype html>
+<html lang="en" data-theme="lofi">
+  <head>
+    <BaseHead title={`CLASSIFIED - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+    {TRANSITION_API && <ViewTransitions />}
+  </head>
+  <body class="bg-[#10090c] text-white overflow-hidden relative" style="height:100vh;">
+    <div id="petal-container"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 font-mono h-screen flex flex-col relative pt-4 pb-2 z-10">
     
-    <!-- Secret Background FX -->
-    <div class="absolute inset-0 pointer-events-none opacity-5 bg-[radial-gradient(circle_at_center,_#ff80bf_0%,_transparent_70%)]"></div>
-
     <!-- Page Header -->
-    <div class="mt-12 mb-10 boot-sequence z-10" style="--delay: 0ms;">
-      <h1 class="text-5xl font-bold text-[#ff80bf] mb-2 flex items-center drop-shadow-[0_0_10px_rgba(255,128,191,0.5)]">
-        CLASSIFIED: NINO<span class="ml-2 inline-block w-4 h-10 bg-[#ff80bf] animate-pulse"></span>
+    <div class="mt-2 mb-3 boot-sequence z-10" style="--delay: 0ms;">
+      <h1 class="text-3xl md:text-4xl font-bold text-[#ff80bf] mb-1 flex items-center tracking-tighter">
+        Nino Nakano
       </h1>
-      <p class="text-xl opacity-80 text-[#ffb3d9]">> Access granted. Welcome to the hidden sector.</p>
+      <p class="text-xs md:text-sm opacity-80 text-[#ffb3d9]">Because someone had to make a dedicated page for the best quintuplet.</p>
     </div>
 
-    <!-- The Secret Content -->
-    <div class="border border-[#ff80bf]/30 bg-[#1a0f14] mb-8 text-sm shadow-[0_0_30px_rgba(255,128,191,0.15)] stdout-container z-10 rounded-md overflow-hidden relative">
-      <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#ff80bf] to-transparent"></div>
+    <!-- MAIN UI GRID (Inspired by Anime UI Layouts) -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 relative z-10 mt-4 flex-grow">
       
-      <div class="bg-[#2d1a24] px-3 py-2 text-xs text-[#ffb3d9]/70 border-b border-[#ff80bf]/20 flex items-center justify-between">
-        <div class="flex items-center">
-          <div class="flex space-x-1.5 mr-3">
-            <div class="w-2.5 h-2.5 rounded-full bg-[#ff4d4d]"></div>
-            <div class="w-2.5 h-2.5 rounded-full bg-[#ffcc00]"></div>
-            <div class="w-2.5 h-2.5 rounded-full bg-[#ff80bf]"></div>
+      <!-- LEFT COLUMN: Profile & Lore -->
+      <div class="md:col-span-3 flex flex-col gap-6 boot-sequence" style="--delay: 200ms;">
+        
+        <!-- Profile Panel -->
+        <div class="border border-[#ff80bf]/30 bg-[#1a0f14]/80 backdrop-blur-md rounded-md p-4">
+          <div class="flex items-center gap-4 mb-4">
+            <!-- AVATAR -->
+            <img 
+              src="/images/link/popup-pfp.png" 
+              alt="Profile Avatar" 
+              class="w-16 h-16 rounded-full border-2 border-[#ff80bf] object-cover"
+            />
+            <div>
+              <h2 class="text-[#ff80bf] font-bold">Nino Nakano</h2>
+              <p class="text-xs text-white/50">@TheUnstoppableTrain</p>
+            </div>
           </div>
-          <span>./best_girl.sh -v</span>
+          <div class="flex gap-2">
+            <button id="like-btn" class="flex-1 bg-[#2d1a24] border border-[#ff80bf]/30 text-white/70 text-xs py-1.5 hover:bg-[#ff80bf]/20 hover:text-[#ff80bf] transition-colors relative overflow-hidden group">
+              <span class="relative z-10 flex items-center justify-center gap-2 font-sans font-semibold">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 group-hover:scale-125 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                Like
+              </span>
+            </button>
+          </div>
         </div>
-        <span class="opacity-50">PID: 55555</span>
-      </div>
-      
-      <div class="p-6 md:p-8">
-        <p class="leading-relaxed text-[#ffb3d9] mb-5">
-          <span class="text-[#ff80bf] font-bold mr-2 terminal-prompt">root@nino:~#</span>
-          <span class="stdout-line">Initializing Tsundere Protocol... [OK]</span>
-        </p>
-        <p class="leading-relaxed text-[#ffb3d9] mb-5 stdout-line">
-          Loading culinary skills... [OK]<br/>
-          Overriding default aesthetic with primary pink theme... [OK]<br/>
-          Bypassing standard responses...
-        </p>
-        <p class="leading-relaxed text-white stdout-line border-l-2 border-[#ff80bf] pl-4 italic bg-[#ff80bf]/5 py-2">
-          "It's not like I wanted you to find this page or anything! Don't get the wrong idea!"
-        </p>
-      </div>
-    </div>
 
-    <div class="flex-grow"></div>
+        <!-- Lore/Stats Panel -->
+        <div class="border border-[#ff80bf]/30 bg-[#1a0f14]/80 backdrop-blur-md rounded-md overflow-hidden">
+          <div class="bg-[#2d1a24] px-3 py-1.5 text-[10px] text-[#ff80bf] border-b border-[#ff80bf]/20 uppercase tracking-widest">
+            > cat about.txt
+          </div>
+          <div class="p-4 text-xs text-[#ffb3d9]/80 leading-relaxed space-y-2">
+            <p>Instance 02 of the Nakano Quintuplet series. Highly volatile tsundere architecture.</p>
+            <p>Known for aggressive frontend styling and unmatched loyalty protocols once trust metrics are verified.</p>
+          </div>
+        </div>
 
-    <!-- Back to normal -->
-    <div class="mt-20 py-6 border-t border-[#ff80bf]/20 flex justify-between items-center text-xs font-sans z-10">
-      <div class="opacity-40 font-mono text-[#ffb3d9]">
-        > warning: theme instability detected
+        <!-- Terminal Execution Panel -->
+        <div class="border border-[#ff80bf]/30 bg-[#1a0f14]/80 backdrop-blur-md rounded-md overflow-hidden stdout-container">
+          <div class="bg-[#2d1a24] px-3 py-1.5 text-[10px] text-[#ffb3d9]/70 border-b border-[#ff80bf]/20 flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="flex space-x-1 mr-2">
+                <div class="w-2 h-2 rounded-full bg-[#ff4d4d]"></div>
+                <div class="w-2 h-2 rounded-full bg-[#ffcc00]"></div>
+                <div class="w-2 h-2 rounded-full bg-[#ff80bf]"></div>
+              </div>
+              <span>./protocol.sh</span>
+            </div>
+          </div>
+          
+          <div class="p-4 text-[11px]">
+            <p class="leading-relaxed text-[#ffb3d9] mb-3">
+              <span class="text-[#ff80bf] font-bold mr-1">></span>
+              <span class="stdout-line">Init Tsundere_Protocol... [OK]</span>
+            </p>
+            <p class="leading-relaxed text-[#ffb3d9] mb-3 stdout-line">
+              > Culinary skills loaded.<br/>
+              > Aesthetic override: PINK.<br/>
+              > Bypassing firewalls...
+            </p>
+            <p class="leading-relaxed text-white stdout-line border-l-2 border-[#ff80bf] pl-3 italic bg-[#ff80bf]/5 py-2 mt-2">
+              "It's not like I wanted you to find this page or anything! Don't get the wrong idea!"
+            </p>
+          </div>
+        </div>
+
+        <!-- Niche Back Button -->
+        <div class="mt-2 text-xs font-mono opacity-50 hover:opacity-100 transition-opacity">
+          <a href="/about-me" class="flex items-center gap-2 text-white/70 hover:text-[#ff80bf] transition-colors w-fit group">
+            <span class="text-[#ff80bf] opacity-0 group-hover:opacity-100 transition-opacity">></span> 
+            <span class="underline decoration-[#ff80bf]/30 underline-offset-4">exit && cd ~</span>
+          </a>
+        </div>
       </div>
-      
-      <a 
-        href="/about-me" 
-        class="text-neutral-400 hover:text-white transition-colors duration-300 font-mono cursor-pointer px-2 py-1"
-        title="Return to standard theme"
-      >
-        [ return_to_base.sh ]
-      </a>
+
+      <!-- CENTER COLUMN: The Main Character Mask -->
+      <!-- MASK PLACEHOLDER: Use a transparent PNG (no background) of the character -->
+      <div class="md:col-span-6 relative flex justify-center items-end min-h-[500px] md:min-h-[700px] boot-sequence" style="--delay: 400ms;">
+        <img 
+          src="/images/link/splashart.png" 
+          alt="Main Character Render" 
+          class="relative z-10 w-[110%] max-w-[110%] h-auto max-h-[85vh] object-contain hover:scale-105 transition-all duration-700 -mb-4"
+        />
+      </div>
+
+      <!-- RIGHT COLUMN: Gallery & Terminal -->
+      <div class="md:col-span-3 flex flex-col gap-6 boot-sequence" style="--delay: 600ms;">
+        
+        <!-- Gallery Panel -->
+        <div class="border border-[#ff80bf]/30 bg-[#1a0f14]/80 backdrop-blur-md rounded-md p-2">
+          <!-- GALLERY -->
+          <img 
+            src="/images/link/Compressed.png" 
+            alt="Gallery Scene" 
+            class="w-full h-auto rounded border border-[#ff80bf]/20 grayscale-[50%] hover:grayscale-0 transition-all duration-300 object-cover"
+          />
+          <div class="mt-2 px-2 pb-1">
+            <p class="text-[10px] text-[#ff80bf] uppercase tracking-widest">> Current Mood</p>
+            <p class="text-xs text-white/70 mt-1">Hostile, but plotting a confession.</p>
+          </div>
+        </div>
+
+        <!-- Facts Terminal Panel -->
+        <div class="border border-[#ff80bf]/30 bg-[#1a0f14]/80 backdrop-blur-md rounded-md overflow-hidden stdout-container">
+          <div class="bg-[#2d1a24] px-3 py-1.5 text-[10px] text-[#ffb3d9]/70 border-b border-[#ff80bf]/20 flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="flex space-x-1 mr-2">
+                <div class="w-2 h-2 rounded-full bg-[#ff4d4d]"></div>
+                <div class="w-2 h-2 rounded-full bg-[#ffcc00]"></div>
+                <div class="w-2 h-2 rounded-full bg-[#ff80bf]"></div>
+              </div>
+              <span>cat facts.txt</span>
+            </div>
+          </div>
+          <div class="p-4">
+            <p class="text-xs text-white/80 leading-relaxed text-justify stdout-line">
+              <span class="text-[#ff80bf] font-bold mr-1">></span>In Season 1, she may not have seemed like the one. But in Season 2, she had the absolute <span class="text-[#ff80bf] font-bold">biggest character arc</span> of the series. She is undeniably the best girl of the five and by far the boldest quintuplet. When she makes her move, she doesn't miss.
+            </p>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
-</BaseLayout>
+  </body>
+</html>
 
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function() {
+
+    // Stdout reveal animation
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
         if (entry.isIntersecting && !entry.target.classList.contains("executed")) {
           entry.target.classList.add("executed");
           const lines = entry.target.querySelectorAll(".stdout-line");
           let delay = 0;
-          lines.forEach((line) => {
-            setTimeout(() => {
+          lines.forEach(function(line) {
+            setTimeout(function() {
               line.style.opacity = "1";
               line.style.visibility = "visible";
             }, delay);
-            delay += 600; // Slower dramatic typing for the secret page
+            delay += 600;
           });
         }
       });
     });
-    document.querySelectorAll(".stdout-container").forEach((c) => observer.observe(c));
+    document.querySelectorAll(".stdout-container").forEach(function(c) {
+      observer.observe(c);
+    });
+
+    // Cherry Blossom Effect
+    const petalContainer = document.getElementById("petal-container");
+    if (petalContainer) {
+      function createPetal() {
+        const petal = document.createElement("div");
+        petal.className = "petal";
+
+        const size = Math.random() * 10 + 5;
+        const startX = Math.random() * window.innerWidth;
+        const swayX = (Math.random() - 0.5) * 120;
+        const duration = Math.random() * 6 + 6;
+        const delay = Math.random() * 3;
+        const r = Math.floor(150 + Math.random() * 50);
+        const b = Math.floor(180 + Math.random() * 50);
+        const a = (0.4 + Math.random() * 0.5).toFixed(2);
+
+        petal.style.width = size + "px";
+        petal.style.height = (size * 0.8) + "px";
+        petal.style.left = startX + "px";
+        petal.style.setProperty("--sway", swayX + "px");
+        petal.style.animationDuration = duration + "s";
+        petal.style.animationDelay = delay + "s";
+        petal.style.background = "rgba(255," + r + "," + b + "," + a + ")";
+
+        petalContainer.appendChild(petal);
+        setTimeout(function() { petal.remove(); }, (duration + delay) * 1000);
+      }
+
+      for (var i = 0; i < 20; i++) {
+        (function() {
+          setTimeout(createPetal, Math.random() * 2000);
+        })();
+      }
+      setInterval(createPetal, 350);
+    }
+
+    // Heart Burst Effect
+    const likeBtn = document.getElementById("like-btn");
+    if (likeBtn) {
+      likeBtn.addEventListener("click", function(e) {
+        for (var i = 0; i < 30; i++) {
+          const heart = document.createElement("div");
+          heart.innerHTML = "\u2764\ufe0f";
+          heart.className = "heart-burst";
+
+          const tx = (Math.random() - 0.5) * 500;
+          const ty = (Math.random() - 0.5) * 500 - 200;
+
+          heart.style.left = e.clientX + "px";
+          heart.style.top = e.clientY + "px";
+          heart.style.setProperty("--tx", tx + "px");
+          heart.style.setProperty("--ty", ty + "px");
+
+          const dur = Math.random() * 1 + 1;
+          heart.style.animationDuration = dur + "s";
+
+          document.body.appendChild(heart);
+          setTimeout(function() { heart.remove(); }, dur * 1000);
+        }
+      });
+    }
+
   });
 </script>
 
 <style>
   .stdout-line { opacity: 0; visibility: hidden; transition: opacity 0.4s; }
   
+  .boot-sequence {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: var(--delay);
+  }
+  
+  @keyframes fade-up {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   /* Global theme overrides just for this page */
   :global(body) {
     --b1: 20 15% 10%; /* Darker background with slight pink tint */
+  }
+
+  #petal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  
+  .petal {
+    position: absolute;
+    top: -20px;
+    border-radius: 150% 0 150% 0;
+    animation: fall ease-in-out forwards;
+    transform-origin: center;
+    box-shadow: 0 0 4px rgba(255, 180, 200, 0.3);
+  }
+
+  @keyframes fall {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0; }
+    5%   { opacity: 1; }
+    50%  { transform: translate(calc(var(--sway) * 0.5), 50vh) rotate(180deg) scale(0.9); }
+    95%  { opacity: 0.8; }
+    100% { transform: translate(var(--sway), 105vh) rotate(360deg) scale(0.4); opacity: 0; }
+  }
+
+  .heart-burst {
+    position: fixed;
+    pointer-events: none;
+    font-size: 1.5rem;
+    z-index: 9999;
+    animation: burst ease-out forwards;
+  }
+
+  @keyframes burst {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+    10% { transform: translate(calc(var(--tx) * 0.1), calc(var(--ty) * 0.1)) scale(1.5); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
   }
 </style>
