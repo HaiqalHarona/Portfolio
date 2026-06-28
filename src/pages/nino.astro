@@ -3,6 +3,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import { ViewTransitions } from "astro:transitions";
 import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
+import "sakura-js/dist/sakura.css";
 ---
 
 <!doctype html>
@@ -11,9 +12,9 @@ import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
     <BaseHead title={`CLASSIFIED - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
     {TRANSITION_API && <ViewTransitions />}
   </head>
-  <body class="bg-[#10090c] text-white overflow-hidden relative" style="height:100vh;">
-    <div id="petal-container"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-8 font-mono h-screen flex flex-col relative pt-4 pb-2 z-10">
+  <body class="bg-[#10090c] text-white relative min-h-screen overflow-x-hidden">
+    <div id="petal-container" class="fixed inset-0 pointer-events-none z-[1] overflow-hidden"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 font-mono min-h-screen flex flex-col relative pt-4 pb-2 z-10">
     
     <!-- Page Header -->
     <div class="mt-2 mb-3 boot-sequence z-10" style="--delay: 0ms;">
@@ -104,11 +105,11 @@ import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
 
       <!-- CENTER COLUMN: The Main Character Mask -->
       <!-- MASK PLACEHOLDER: Use a transparent PNG (no background) of the character -->
-      <div class="md:col-span-6 relative flex justify-center items-end min-h-[500px] md:min-h-[700px] boot-sequence" style="--delay: 400ms;">
+      <div class="md:col-span-6 relative flex justify-center items-end min-h-[400px] md:min-h-[550px] boot-sequence" style="--delay: 400ms;">
         <img 
           src="/images/link/splashart.png" 
           alt="Main Character Render" 
-          class="relative z-10 w-[110%] max-w-[110%] h-auto max-h-[85vh] object-contain hover:scale-105 transition-all duration-700 -mb-4"
+          class="relative z-10 w-[110%] max-w-[110%] h-auto max-h-[75vh] object-contain hover:scale-105 transition-all duration-700 mb-8 md:mb-24"
         />
       </div>
 
@@ -154,8 +155,56 @@ import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
   </body>
 </html>
 
+<script>
+  // @ts-ignore
+  import sakuraUrl from 'sakura-js/dist/sakura.js?url';
+
+  document.addEventListener('astro:page-load', () => {
+    // Sakura Initialization
+    const s = document.createElement('script');
+    s.src = sakuraUrl;
+    s.onload = () => {
+      // @ts-ignore
+      new (window as any).Sakura('#petal-container', {
+        colors: [
+          {
+            gradientColorStart: 'rgba(255, 183, 197, 0.9)',
+            gradientColorEnd: 'rgba(255, 197, 208, 0.9)',
+            gradientColorDegree: 120,
+          }
+        ]
+      });
+    };
+    document.head.appendChild(s);
+
+    // Like Button Heart Burst (dynamically import to avoid missing type declarations)
+    const likeBtn = document.getElementById("like-btn");
+    if (likeBtn) {
+      likeBtn.addEventListener("click", function(e) {
+        // @ts-ignore
+        import('canvas-confetti').then((mod) => {
+          const confetti = (mod && (mod.default || mod));
+          if (typeof confetti === 'function') {
+            confetti({
+              particleCount: 40,
+              spread: 90,
+              origin: { y: 1.1 },
+              startVelocity: 60,
+              gravity: 0.8,
+              ticks: 300,
+              shapes: ['heart'],
+              colors: ['FFC0CB', 'FF69B4', 'FF1493', 'C71585'],
+              scalar: 2,
+              zIndex: 9999
+            });
+          }
+        }).catch(() => {});
+      });
+    }
+  });
+</script>
 <script is:inline>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("astro:page-load", function() {
 
     // Stdout reveal animation
     const observer = new IntersectionObserver(function(entries) {
@@ -178,67 +227,6 @@ import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
       observer.observe(c);
     });
 
-    // Cherry Blossom Effect
-    const petalContainer = document.getElementById("petal-container");
-    if (petalContainer) {
-      function createPetal() {
-        const petal = document.createElement("div");
-        petal.className = "petal";
-
-        const size = Math.random() * 10 + 5;
-        const startX = Math.random() * window.innerWidth;
-        const swayX = (Math.random() - 0.5) * 120;
-        const duration = Math.random() * 6 + 6;
-        const delay = Math.random() * 3;
-        const r = Math.floor(150 + Math.random() * 50);
-        const b = Math.floor(180 + Math.random() * 50);
-        const a = (0.4 + Math.random() * 0.5).toFixed(2);
-
-        petal.style.width = size + "px";
-        petal.style.height = (size * 0.8) + "px";
-        petal.style.left = startX + "px";
-        petal.style.setProperty("--sway", swayX + "px");
-        petal.style.animationDuration = duration + "s";
-        petal.style.animationDelay = delay + "s";
-        petal.style.background = "rgba(255," + r + "," + b + "," + a + ")";
-
-        petalContainer.appendChild(petal);
-        setTimeout(function() { petal.remove(); }, (duration + delay) * 1000);
-      }
-
-      for (var i = 0; i < 20; i++) {
-        (function() {
-          setTimeout(createPetal, Math.random() * 2000);
-        })();
-      }
-      setInterval(createPetal, 350);
-    }
-
-    // Heart Burst Effect
-    const likeBtn = document.getElementById("like-btn");
-    if (likeBtn) {
-      likeBtn.addEventListener("click", function(e) {
-        for (var i = 0; i < 30; i++) {
-          const heart = document.createElement("div");
-          heart.innerHTML = "\u2764\ufe0f";
-          heart.className = "heart-burst";
-
-          const tx = (Math.random() - 0.5) * 500;
-          const ty = (Math.random() - 0.5) * 500 - 200;
-
-          heart.style.left = e.clientX + "px";
-          heart.style.top = e.clientY + "px";
-          heart.style.setProperty("--tx", tx + "px");
-          heart.style.setProperty("--ty", ty + "px");
-
-          const dur = Math.random() * 1 + 1;
-          heart.style.animationDuration = dur + "s";
-
-          document.body.appendChild(heart);
-          setTimeout(function() { heart.remove(); }, dur * 1000);
-        }
-      });
-    }
 
   });
 </script>
@@ -262,45 +250,4 @@ import { SITE_TITLE, SITE_DESCRIPTION, TRANSITION_API } from "../config";
     --b1: 20 15% 10%; /* Darker background with slight pink tint */
   }
 
-  #petal-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-  }
-  
-  .petal {
-    position: absolute;
-    top: -20px;
-    border-radius: 150% 0 150% 0;
-    animation: fall ease-in-out forwards;
-    transform-origin: center;
-    box-shadow: 0 0 4px rgba(255, 180, 200, 0.3);
-  }
-
-  @keyframes fall {
-    0%   { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0; }
-    5%   { opacity: 1; }
-    50%  { transform: translate(calc(var(--sway) * 0.5), 50vh) rotate(180deg) scale(0.9); }
-    95%  { opacity: 0.8; }
-    100% { transform: translate(var(--sway), 105vh) rotate(360deg) scale(0.4); opacity: 0; }
-  }
-
-  .heart-burst {
-    position: fixed;
-    pointer-events: none;
-    font-size: 1.5rem;
-    z-index: 9999;
-    animation: burst ease-out forwards;
-  }
-
-  @keyframes burst {
-    0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-    10% { transform: translate(calc(var(--tx) * 0.1), calc(var(--ty) * 0.1)) scale(1.5); opacity: 1; }
-    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-  }
 </style>

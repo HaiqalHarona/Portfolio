@@ -1,5 +1,4 @@
 /** @type {import('tailwindcss').Config} */
-import typography from '@tailwindcss/typography';
 import daisyui from 'daisyui';
 
 export default {
@@ -15,7 +14,7 @@ export default {
             }
         },
     },
-    plugins: [typography, daisyui],
+    plugins: [daisyui],
     daisyui: {
         // We include the default "light" theme, plus your custom "ninodark"
         themes: [

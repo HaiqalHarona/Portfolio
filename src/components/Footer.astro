@@ -2,14 +2,22 @@
 const today = new Date();
 ---
 
-<footer class="footer footer-center block mb-5 pt-10">
-  <div class="pb-2">
-    &copy; {today.getFullYear()} Your Name
-  </div>
-  <div class="inline opacity-75">
-    Developed using
-    <!-- Thanks for using this template. You can keep this line to support my work :) -->
-    <a href="https://astrofy-template.netlify.app/" target="_blank" class="font-bold">Astrofy Template ⚡️</a>
+<footer class="footer footer-center block mt-10 pb-6 font-mono text-sm mt-auto">
+  <div class="inline-block border border-neutral bg-[#0a0a0a] px-4 py-2 rounded shadow-[0_0_10px_rgba(34,211,238,0.05)]">
+    <span class="text-accent font-bold">guest@haiqal:~#</span>
+    <span class="text-base-content/80 ml-2">&copy; {today.getFullYear()} Built by</span>
+    <a href="https://github.com/HaiqalHarona" target="_blank" class="text-secondary hover:text-secondary/80 underline decoration-secondary/30 underline-offset-2 ml-1">HaiqalHarona</a>
+    <span class="text-base-content/50 mx-2">|</span>
+    <a href="https://github.com/HaiqalHarona/Portfolio" target="_blank" class="text-base-content/70 hover:text-primary transition-colors">View Repo</a>
+    <span class="ml-1 text-primary blink">_</span>
   </div>
 </footer>
-<style></style>
+<style>
+  .blink {
+    animation: terminal-blink 1s step-end infinite;
+  }
+  @keyframes terminal-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+</style>
