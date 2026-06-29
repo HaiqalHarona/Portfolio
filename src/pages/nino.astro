@@ -11,6 +11,15 @@ import "sakura-js/dist/sakura.css";
   <head>
     <BaseHead title={`CLASSIFIED - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
     {TRANSITION_API && <ViewTransitions />}
+    <script is:inline>
+      (function() {
+        const hash = window.location.hash;
+        const storedToken = sessionStorage.getItem('nino_access_token');
+        if (!hash || !storedToken || hash !== '#access=' + storedToken) {
+          window.location.replace('/about-me');
+        }
+      })();
+    </script>
   </head>
   <body class="bg-[#10090c] text-white relative min-h-screen overflow-x-hidden">
     <div id="petal-container" class="fixed inset-0 pointer-events-none z-[1] overflow-hidden"></div>
@@ -28,7 +37,7 @@ import "sakura-js/dist/sakura.css";
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 relative z-10 mt-4 flex-grow">
       
       <!-- LEFT COLUMN: Profile & Lore -->
-      <div class="md:col-span-3 flex flex-col gap-6 boot-sequence" style="--delay: 200ms;">
+      <div class="md:col-span-3 order-2 md:order-1 flex flex-col gap-4 md:gap-6 boot-sequence" style="--delay: 200ms;">
         
         <!-- Profile Panel -->
         <div class="border border-[#ff80bf]/30 bg-[#1a0f14]/80 backdrop-blur-md rounded-md p-4">
@@ -105,16 +114,16 @@ import "sakura-js/dist/sakura.css";
 
       <!-- CENTER COLUMN: The Main Character Mask -->
       <!-- MASK PLACEHOLDER: Use a transparent PNG (no background) of the character -->
-      <div class="md:col-span-6 relative flex justify-center items-end min-h-[400px] md:min-h-[550px] boot-sequence" style="--delay: 400ms;">
+      <div class="md:col-span-6 order-1 md:order-2 relative flex justify-center items-end min-h-[300px] md:min-h-[550px] boot-sequence" style="--delay: 400ms;">
         <img 
           src="/images/link/splashart.png" 
           alt="Main Character Render" 
-          class="relative z-10 w-[110%] max-w-[110%] h-auto max-h-[75vh] object-contain hover:scale-105 transition-all duration-700 mb-8 md:mb-24"
+          class="main-char-img relative z-10 h-auto object-contain hover:scale-105 transition-all duration-700"
         />
       </div>
 
       <!-- RIGHT COLUMN: Gallery & Terminal -->
-      <div class="md:col-span-3 flex flex-col gap-6 boot-sequence" style="--delay: 600ms;">
+      <div class="md:col-span-3 order-3 md:order-3 flex flex-col gap-4 md:gap-6 boot-sequence" style="--delay: 600ms;">
         
         <!-- Gallery Panel -->
         <div class="border border-[#ff80bf]/30 bg-[#1a0f14]/80 backdrop-blur-md rounded-md p-2">
@@ -248,6 +257,26 @@ import "sakura-js/dist/sakura.css";
   /* Global theme overrides just for this page */
   :global(body) {
     --b1: 20 15% 10%; /* Darker background with slight pink tint */
+  }
+
+  /* Main character image responsive styling */
+  .main-char-img {
+    width: 100%;
+    max-width: 100%;
+    max-height: 48vh;
+    margin-bottom: 1rem;
+    position: relative;
+    top: -15px;
+  }
+
+  @media (min-width: 768px) {
+    .main-char-img {
+      width: 130%;
+      max-width: 130%;
+      max-height: 85vh;
+      margin-bottom: 4rem;
+      top: -70px;
+    }
   }
 
 </style>

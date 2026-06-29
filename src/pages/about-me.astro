@@ -115,7 +115,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <span class="text-primary font-bold">Hobbies:</span> ["pc_part_hunting", "homelab_window_shopping", "home_appliance_shopping", "anime_&_manga", "gaming"]
           </div>
           <div class="opacity-90 leading-relaxed text-base-content stdout-line">
-            <span class="text-primary font-bold">Side_Quests:</span> Salvaging hardware, <a href="/nino" class="hover:text-[#ff80bf] hover:bg-[#ff80bf]/10 transition-colors duration-300 rounded px-1 cursor-pointer" title="Execute classified payload">Nino</a>
+            <span class="text-primary font-bold">Side_Quests:</span> Salvaging hardware, <a href="/nino" id="nino-link" class="hover:text-[#ff80bf] hover:bg-[#ff80bf]/10 transition-colors duration-300 rounded px-1 cursor-pointer" title="Click Me">Nino</a>
           </div>
         </div>
       </div>
@@ -124,6 +124,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <script>
   document.addEventListener('astro:page-load', () => {
+    const ninoLink = document.getElementById('nino-link');
+    if (ninoLink) {
+      ninoLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const token = Math.random().toString(36).substring(2, 10) + Date.now().toString(36);
+        sessionStorage.setItem('nino_access_token', token);
+        window.location.href = '/nino#access=' + token;
+      });
+    }
+
     // Terminal stdout Gen Animation Logic
     const stdoutObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

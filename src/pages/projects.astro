@@ -43,7 +43,7 @@ try {
             <div class="ml-4 md:ml-8 transition-transform group-hover:-translate-y-1 duration-300 bg-base-200/50 rounded-xl p-4 border border-neutral/30 shadow-sm hover:shadow-md hover:border-primary/50">
               <HorizontalCard
                 title={project.title}
-                img={project.cover_image_url || (project.cover_image ? (project.cover_image.startsWith("http://") || project.cover_image.startsWith("https://") ? project.cover_image : pb.files.getUrl(project, project.cover_image)) : "/post_img.webp")}
+                img={project.cover_image_url || (project.cover_image ? (project.cover_image.startsWith("http://") || project.cover_image.startsWith("https://") ? project.cover_image : pb.files.getUrl(project, project.cover_image)) : undefined)}
                 desc={project.description}
                 url={`/projects/${project.id}`}
                 badge={project.is_featured ? "Featured" : undefined}
@@ -71,7 +71,7 @@ try {
             <div class="ml-4 md:ml-8 transition-transform group-hover:-translate-y-1 duration-300 bg-base-200/50 rounded-xl p-4 border border-neutral/30 shadow-sm hover:shadow-md hover:border-primary/50">
               <HorizontalCard
                 title={project.title}
-                img={project.cover_image_url || (project.cover_image ? (project.cover_image.startsWith("http://") || project.cover_image.startsWith("https://") ? project.cover_image : pb.files.getUrl(project, project.cover_image)) : "/post_img.webp")}
+                img={project.cover_image_url || (project.cover_image ? (project.cover_image.startsWith("http://") || project.cover_image.startsWith("https://") ? project.cover_image : pb.files.getUrl(project, project.cover_image)) : undefined)}
                 desc={project.description}
                 url={`/projects/${project.id}`}
                 badge={project.is_featured ? "Featured" : undefined}
