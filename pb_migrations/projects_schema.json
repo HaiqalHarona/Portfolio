@@ -231,6 +231,51 @@
         "required": false,
         "system": false,
         "type": "json"
+      },
+      {
+        "hidden": false,
+        "id": "field_images123",
+        "maxSelect": 10,
+        "maxSize": 5242880,
+        "mimeTypes": [
+          "image/jpeg",
+          "image/png",
+          "image/svg+xml",
+          "image/gif",
+          "image/webp"
+        ],
+        "name": "images",
+        "presentable": false,
+        "primaryKey": false,
+        "protected": false,
+        "required": false,
+        "system": false,
+        "thumbs": [
+          "300x0"
+        ],
+        "type": "file"
+      },
+      {
+        "hidden": false,
+        "id": "field_imgheaders123",
+        "maxSize": 2000000,
+        "name": "image_headers",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "json"
+      },
+      {
+        "hidden": false,
+        "id": "field_vidheaders123",
+        "maxSize": 2000000,
+        "name": "video_headers",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "json"
       }
     ]
   }

@@ -50,16 +50,30 @@ if (project.tech_stack) {
 
 let extraLinks: any[] = [];
 if (project.links) {
-  try {
-    extraLinks = Array.isArray(project.links)
-      ? project.links
-      : JSON.parse(project.links);
-  } catch {
-    if (typeof project.links === "string") {
-      try {
-        extraLinks = JSON.parse(project.links.replace(/'/g, '"'));
-      } catch {
-        // ignore
+  let parsedLinks: any = project.links;
+  
+  if (typeof project.links === 'string') {
+    try {
+      parsedLinks = JSON.parse(project.links.replace(/'/g, '"'));
+    } catch {
+      if (project.links.trim()) {
+        parsedLinks = [project.links.trim()];
+      }
+    }
+  }
+
+  if (Array.isArray(parsedLinks)) {
+    extraLinks = parsedLinks;
+  } else if (parsedLinks && typeof parsedLinks === 'object') {
+    if (parsedLinks.url) {
+      extraLinks = [parsedLinks];
+    } else {
+      for (const [key, val] of Object.entries(parsedLinks)) {
+        if (typeof val === 'string' && (val.startsWith('http') || val.startsWith('/'))) {
+          extraLinks.push({ url: val, label: key });
+        } else if (typeof key === 'string' && (key.startsWith('http') || key.startsWith('/'))) {
+          extraLinks.push({ url: key, label: val });
+        }
       }
     }
   }
@@ -73,18 +87,50 @@ if (!coverUrl && project.cover_image) {
 }
 
 // Resolve multiple videos
-const videoUrls: any[] = [];
+const videoUrls: { url: string; header: string }[] = [];
 if (project.videos) {
   const list = Array.isArray(project.videos)
     ? project.videos
     : [project.videos];
-  list.forEach((vid: any) => {
+    
+  let headersData: any = null;
+  if (project.video_headers) {
+    try {
+      headersData = typeof project.video_headers === 'string'
+        ? JSON.parse(project.video_headers)
+        : project.video_headers;
+    } catch {
+      headersData = null;
+    }
+  }
+
+  list.forEach((vid: any, idx: number) => {
     if (vid) {
+      let url = "";
+      let vidName = "";
       if (typeof vid === "string" && (vid.startsWith("http://") || vid.startsWith("https://"))) {
-        videoUrls.push(vid);
+        url = vid;
+        vidName = vid;
       } else {
-        videoUrls.push(pb.files.getUrl(project, vid));
+        url = pb.files.getUrl(project, vid);
+        vidName = typeof vid === "string" ? vid : "";
       }
+      
+      let header = `Demo Video #${idx + 1}`;
+      if (headersData) {
+        if (Array.isArray(headersData)) {
+          if (headersData[idx]) header = headersData[idx];
+        } else if (typeof headersData === 'object') {
+          for (const [key, val] of Object.entries(headersData)) {
+            if (vidName.toLowerCase().includes(key.toLowerCase())) {
+              header = val as string;
+              break;
+            }
+          }
+        }
+      }
+      
+      videoUrls.push({ url, header });
     }
   });
 }
@@ -93,14 +139,14 @@ if (project.video_links) {
     const linksList = Array.isArray(project.video_links)
       ? project.video_links
       : JSON.parse(project.video_links);
-    linksList.forEach((linkUrl: any) => {
+    linksList.forEach((linkUrl: any, idx: number) => {
       if (linkUrl && typeof linkUrl === "string" && linkUrl.trim()) {
-        videoUrls.push(linkUrl.trim());
+        videoUrls.push({ url: linkUrl.trim(), header: `External Demo #${idx + 1}` });
       }
     });
   } catch {
     if (typeof project.video_links === "string" && project.video_links.trim()) {
-      videoUrls.push(project.video_links.trim());
+      videoUrls.push({ url: project.video_links.trim(), header: `External Demo` });
     }
   }
 }
@@ -110,6 +156,57 @@ if (!longFormVideoUrl && project.long_form_video) {
   longFormVideoUrl = project.long_form_video.startsWith("http://") || project.long_form_video.startsWith("https://")
     ? project.long_form_video
     : pb.files.getUrl(project, project.long_form_video);
+}
+
+// Resolve multiple images
+const imageUrls: { url: string; header: string }[] = [];
+if (project.images) {
+  const list = Array.isArray(project.images)
+    ? project.images
+    : [project.images];
+  
+  let headersData: any = null;
+  if (project.image_headers) {
+    try {
+      headersData = typeof project.image_headers === 'string'
+        ? JSON.parse(project.image_headers)
+        : project.image_headers;
+    } catch {
+      // Fallback if invalid JSON
+      headersData = null;
+    }
+  }
+
+  list.forEach((img: any, idx: number) => {
+    if (img) {
+      let url = "";
+      let imgName = "";
+      if (typeof img === "string" && (img.startsWith("http://") || img.startsWith("https://"))) {
+        url = img;
+        imgName = img;
+      } else {
+        url = pb.files.getUrl(project, img);
+        imgName = typeof img === "string" ? img : "";
+      }
+      
+      let header = `Image #${idx + 1}`;
+      if (headersData) {
+        if (Array.isArray(headersData)) {
+          if (headersData[idx]) header = headersData[idx];
+        } else if (typeof headersData === 'object') {
+          // If it's a JSON object, match the key to part of the image filename
+          for (const [key, val] of Object.entries(headersData)) {
+            if (imgName.toLowerCase().includes(key.toLowerCase())) {
+              header = val as string;
+              break;
+            }
+          }
+        }
+      }
+
+      imageUrls.push({ url, header });
+    }
+  });
 }
 
 function getMediaDetails(url: string) {
@@ -159,204 +256,129 @@ function getMediaDetails(url: string) {
   sideBarActiveItemID="projects"
   currentPath={`/projects/${project.id}`}
 >
-  <div class="space-y-6">
-    <!-- Cover Image -->
-    {
-      coverUrl && (
-        <div class="w-full h-80 overflow-hidden rounded-xl shadow-md bg-neutral">
-          <img
-            src={coverUrl}
-            alt={`${project.title} Cover`}
-            class="w-full h-full object-cover"
-          />
-        </div>
-      )
-    }
-
-    <!-- Title and Meta -->
-    <div
-      class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-neutral pb-4"
-    >
-      <div>
-        <h1 class="text-4xl font-bold flex items-center gap-2">
-          {project.title}
-        </h1>
-        <div
-          class="text-sm text-base-content/60 mt-1 flex flex-wrap items-center gap-3"
-        >
-          <span class="badge badge-outline capitalize"
-            >{
-              project.project_type === "forfun"
-                ? "For Fun"
-                : project.project_type
-            }</span
-          >
-          {project.timeline && <span>{project.timeline}</span>}
-        </div>
-      </div>
-
-      <!-- Primary Links -->
-      <div class="flex items-center gap-2">
-        {
-          project.github_link && (
-            <a
-              href={project.github_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-outline btn-sm"
-            >
-              <svg class="h-4 w-4 fill-current mr-1" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-              </svg>
-              GitHub
-            </a>
-          )
-        }
-        {
-          project.website_link && (
-            <a
-              href={project.website_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn-primary btn-sm"
-            >
-              Live Demo
-            </a>
-          )
-        }
+  <div class="space-y-12 font-mono max-w-4xl mx-auto">
+    
+    <!-- Free Header -->
+    <div class="mb-4">
+      <h1 class="text-4xl md:text-5xl font-bold text-primary mb-4">./{project.title}</h1>
+      <div class="flex flex-wrap gap-4 text-sm opacity-80">
+        <span class="text-accent">type: {project.project_type}</span>
+        {project.timeline && <span class="text-neutral-content">date: {project.timeline}</span>}
       </div>
     </div>
 
-    <!-- Tech Stack badges -->
-    {
-      techStack.length > 0 && (
-        <div>
-          <h2 class="text-sm font-semibold uppercase opacity-60 mb-2">
-            Tech Stack
-          </h2>
+    <!-- Description -->
+    {project.description && (
+      <div class="border border-neutral rounded-xl overflow-hidden bg-[#0a0a0a] shadow-[0_0_15px_rgba(34,211,238,0.05)]">
+        <div class="bg-neutral/30 px-4 py-1 text-[10px] uppercase tracking-widest opacity-60 border-b border-neutral">
+          description.txt
+        </div>
+        <div class="p-6">
+          <p class="leading-relaxed opacity-90 whitespace-pre-line">{project.description}</p>
+        </div>
+      </div>
+    )}
+
+    <!-- Tech Stack -->
+    {techStack && techStack.length > 0 && (
+      <div class="border border-neutral rounded-xl overflow-hidden bg-[#0a0a0a] shadow-[0_0_15px_rgba(34,211,238,0.05)]">
+        <div class="bg-neutral/30 px-4 py-1 text-[10px] uppercase tracking-widest opacity-60 border-b border-neutral">
+          tech_stack.json
+        </div>
+        <div class="p-6">
           <div class="flex flex-wrap gap-2">
             {techStack.map((tech) => (
-              <span class="badge badge-neutral">{tech}</span>
+              <span class="text-primary hover:text-accent cursor-default transition-colors">[{tech}]</span>
             ))}
           </div>
         </div>
-      )
-    }
+      </div>
+    )}
 
-    <!-- Description -->
-    {
-      project.description && (
-        <div class="prose max-w-none text-base-content/85">
-          <h2 class="text-xl font-bold mb-2">About the Project</h2>
-          <p class="whitespace-pre-line leading-relaxed">
-            {project.description}
-          </p>
+    <!-- Media Grid -->
+    {(videoUrls.length > 0 || imageUrls.length > 0) && (
+      <div class="border border-neutral rounded-xl overflow-hidden bg-[#0a0a0a] shadow-[0_0_15px_rgba(34,211,238,0.05)]">
+        <div class="bg-neutral/30 px-4 py-1 text-[10px] uppercase tracking-widest opacity-60 border-b border-neutral">
+          media_gallery.sh
         </div>
-      )
-    }
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {videoUrls.map((videoObj, idx) => {
+              const media = getMediaDetails(videoObj.url);
+              const totalMedia = videoUrls.length + imageUrls.length;
+              const isFeatured = idx === 0 && (totalMedia === 1 || totalMedia % 2 !== 0);
+              const colSpanClass = isFeatured ? "md:col-span-2" : "md:col-span-1";
+              
+              return (
+                <div class={`relative group flex flex-col ${colSpanClass}`}>
+                  <div class="absolute -inset-0.5 bg-gradient-to-r from-primary/30 to-accent/30 blur opacity-0 group-hover:opacity-100 transition duration-500 rounded-xl"></div>
+                  <div class="relative bg-black rounded-xl overflow-hidden border border-neutral/50 shadow-sm flex flex-col flex-grow">
+                    <div class="bg-neutral/20 px-3 py-1.5 text-[10px] border-b border-neutral/50 flex items-center justify-between">
+                       <div class="flex space-x-1.5">
+                         <div class="w-2 h-2 rounded-full bg-neutral-content/20"></div>
+                         <div class="w-2 h-2 rounded-full bg-neutral-content/20"></div>
+                         <div class="w-2 h-2 rounded-full bg-neutral-content/20"></div>
+                       </div>
+                       <span class="opacity-40 font-mono tracking-wider">viewing: {videoObj.header || `video_${idx}.mp4`}</span>
+                    </div>
+                    {media?.type === 'youtube' || media?.type === 'vimeo' ? (
+                      <iframe src={media.embedUrl} class="w-full aspect-video flex-grow" allowfullscreen />
+                    ) : media?.type === 'gif' || media?.type === 'image' ? (
+                      <img src={media.url} class="w-full aspect-video object-cover flex-grow" />
+                    ) : (
+                      <video src={media?.url} controls class="w-full aspect-video flex-grow" />
+                    )}
+                  </div>
+                  {videoObj.header && <span class="text-xs text-primary/70 mt-2 font-mono w-full">> {videoObj.header}</span>}
+                </div>
+              );
+            })}
+            
+            {imageUrls.map((img, idx) => {
+               const totalMedia = videoUrls.length + imageUrls.length;
+               const isFeatured = videoUrls.length === 0 && idx === 0 && (totalMedia === 1 || totalMedia % 2 !== 0);
+               const colSpanClass = isFeatured ? "md:col-span-2" : "md:col-span-1";
 
-    <!-- Extra Links -->
-    {
-      extraLinks.length > 0 && (
-        <div class="border-t border-neutral pt-4">
-          <h2 class="text-xl font-bold mb-3">Links & Resources</h2>
-          <ul class="list-disc list-inside space-y-1 text-primary">
+               return (
+                 <div class={`relative group flex flex-col ${colSpanClass}`}>
+                   <div class="absolute -inset-0.5 bg-gradient-to-r from-primary/30 to-accent/30 blur opacity-0 group-hover:opacity-100 transition duration-500 rounded-xl"></div>
+                   <div class="relative bg-black rounded-xl overflow-hidden border border-neutral/50 shadow-sm flex flex-col flex-grow">
+                     <div class="bg-neutral/20 px-3 py-1.5 text-[10px] border-b border-neutral/50 flex items-center justify-between">
+                       <div class="flex space-x-1.5">
+                         <div class="w-2 h-2 rounded-full bg-neutral-content/20"></div>
+                         <div class="w-2 h-2 rounded-full bg-neutral-content/20"></div>
+                         <div class="w-2 h-2 rounded-full bg-neutral-content/20"></div>
+                       </div>
+                       <span class="opacity-40 font-mono tracking-wider">viewing: {img.header || `image_${idx}.png`}</span>
+                     </div>
+                     <img src={img.url} alt={img.header} class="w-full h-auto object-contain flex-grow bg-neutral/10" style={isFeatured ? "max-height: 700px;" : "max-height: 400px;"} />
+                   </div>
+                   {img.header && <span class="text-xs text-primary/70 mt-2 font-mono w-full">> {img.header}</span>}
+                 </div>
+               );
+            })}
+          </div>
+        </div>
+      </div>
+    )}
+
+    <!-- Resources -->
+    {extraLinks && extraLinks.length > 0 && (
+      <div class="border border-neutral rounded-xl overflow-hidden bg-[#0a0a0a] shadow-[0_0_15px_rgba(34,211,238,0.05)]">
+        <div class="bg-neutral/30 px-4 py-1 text-[10px] uppercase tracking-widest opacity-60 border-b border-neutral">
+          resources.sh
+        </div>
+        <div class="p-6">
+          <ul class="space-y-2">
             {extraLinks.map((link: any) => (
-              <li>
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="hover:underline"
-                >
-                  {link.label || link.url}
-                </a>
+              <li class="flex items-center gap-2">
+                <span class="text-primary">$</span>
+                <a href={link.url} target="_blank" class="hover:text-accent hover:underline">{link.label || link.url}</a>
               </li>
             ))}
           </ul>
         </div>
-      )
-    }
-
-    <!-- Videos section -->
-    {
-      videoUrls.length > 0 && (
-        <div class="border-t border-neutral pt-6 space-y-4">
-          <h2 class="text-xl font-bold">Project Demos</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {videoUrls.map((videoUrl, index) => {
-              const media = getMediaDetails(videoUrl);
-              return (
-                <div class="space-y-1">
-                  <span class="text-xs opacity-60 font-mono">
-                    Demo Media #{index + 1}
-                  </span>
-                  {media?.type === 'youtube' || media?.type === 'vimeo' ? (
-                    <iframe
-                      src={media.embedUrl}
-                      class="w-full aspect-video rounded-lg shadow border border-neutral/50 bg-neutral/20"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen
-                    />
-                  ) : media?.type === 'gif' || media?.type === 'image' ? (
-                    <img
-                      src={media.url}
-                      alt={`Demo Media #${index + 1}`}
-                      class="w-full rounded-lg shadow border border-neutral/50 bg-neutral/20 object-cover aspect-video"
-                    />
-                  ) : (
-                    <video
-                      src={media?.url}
-                      controls
-                      class="w-full rounded-lg shadow border border-neutral/50 bg-neutral/20 aspect-video"
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )
-    }
-
-    <!-- Long form video section -->
-    {
-      longFormVideoUrl && (
-        <div class="border-t border-neutral pt-6 space-y-3">
-          <h2 class="text-xl font-bold">Full Video Walkthrough</h2>
-          <div class="w-full font-sans">
-            {(() => {
-              const media = getMediaDetails(longFormVideoUrl);
-              if (media?.type === 'youtube' || media?.type === 'vimeo') {
-                return (
-                  <iframe
-                    src={media.embedUrl}
-                    class="w-full aspect-video rounded-lg shadow-md border border-neutral bg-neutral/20"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                  />
-                );
-              } else if (media?.type === 'gif' || media?.type === 'image') {
-                return (
-                  <img
-                    src={media.url}
-                    alt="Walkthrough"
-                    class="w-full rounded-lg shadow-md border border-neutral bg-neutral/20"
-                  />
-                );
-              } else {
-                return (
-                  <video
-                    src={media?.url}
-                    controls
-                    class="w-full rounded-lg shadow-md border border-neutral bg-neutral/20"
-                  />
-                );
-              }
-            })()}
-          </div>
-        </div>
-      )
-    }
+      </div>
+    )}
   </div>
 </BaseLayout>
