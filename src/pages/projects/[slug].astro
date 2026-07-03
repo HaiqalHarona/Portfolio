@@ -1,12 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { pb } from "../../lib/pocketbase";
+import createSlug from "../../lib/createSlug";
 
 export async function getStaticPaths() {
   try {
     const projects = await pb.collection("projects").getFullList();
     return projects.map((project) => ({
-      params: { id: project.id },
+      params: { slug: createSlug(project.title, project.id) },
+      props: { project },
     }));
   } catch (e) {
     console.error("Failed to generate static paths for projects:", e);
@@ -14,18 +16,8 @@ export async function getStaticPaths() {
   }
 }
 
-const { id } = Astro.params;
-
-if (!id) {
-  return Astro.redirect("/404");
-}
-
-let project: any = {};
-try {
-  project = await pb.collection("projects").getOne(id);
-} catch (e) {
-  console.error(`Failed to fetch project ${id}:`, e);
-}
+const { slug } = Astro.params;
+const { project } = Astro.props;
 
 if (!project || !project.id) {
   return Astro.redirect("/404");
@@ -33,14 +25,30 @@ if (!project || !project.id) {
 
 let techStack: any[] = [];
 if (project.tech_stack) {
-  try {
-    techStack = Array.isArray(project.tech_stack)
-      ? project.tech_stack
-      : JSON.parse(project.tech_stack);
-  } catch {
-    if (typeof project.tech_stack === "string") {
+  if (Array.isArray(project.tech_stack)) {
+    techStack = project.tech_stack;
+  } else if (typeof project.tech_stack === "object" && project.tech_stack !== null) {
+    techStack = Object.entries(project.tech_stack).map(([key, val]) => `${key}: ${val}`);
+  } else if (typeof project.tech_stack === "string") {
+    try {
+      const parsed = JSON.parse(project.tech_stack);
+      if (Array.isArray(parsed)) {
+        techStack = parsed;
+      } else if (typeof parsed === "object" && parsed !== null) {
+        techStack = Object.entries(parsed).map(([key, val]) => `${key}: ${val}`);
+      } else {
+        techStack = [project.tech_stack];
+      }
+    } catch {
       try {
-        techStack = JSON.parse(project.tech_stack.replace(/'/g, '"'));
+        const parsed = JSON.parse(project.tech_stack.replace(/'/g, '"'));
+        if (Array.isArray(parsed)) {
+          techStack = parsed;
+        } else if (typeof parsed === "object" && parsed !== null) {
+          techStack = Object.entries(parsed).map(([key, val]) => `${key}: ${val}`);
+        } else {
+          techStack = [project.tech_stack];
+        }
       } catch {
         techStack = [project.tech_stack];
       }
@@ -254,7 +262,7 @@ function getMediaDetails(url: string) {
 <BaseLayout
   title={project.title}
   sideBarActiveItemID="projects"
-  currentPath={`/projects/${project.id}`}
+  currentPath={`/projects/${createSlug(project.title, project.id)}`}
 >
   <div class="space-y-12 font-mono max-w-4xl mx-auto">
     
@@ -286,10 +294,23 @@ function getMediaDetails(url: string) {
           tech_stack.json
         </div>
         <div class="p-6">
-          <div class="flex flex-wrap gap-2">
-            {techStack.map((tech) => (
-              <span class="text-primary hover:text-accent cursor-default transition-colors">[{tech}]</span>
-            ))}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {techStack.map((tech) => {
+              const parts = tech.split(': ');
+              if (parts.length > 1) {
+                return (
+                  <div class="flex flex-col justify-between bg-neutral/10 border border-neutral/40 rounded-lg p-3 hover:border-primary/40 transition-colors font-mono gap-1.5">
+                    <span class="text-accent text-[10px] uppercase tracking-widest">{parts[0]}</span>
+                    <span class="text-primary text-sm font-semibold break-words">{parts[1]}</span>
+                  </div>
+                );
+              }
+              return (
+                <div class="bg-neutral/10 border border-neutral/40 rounded-lg p-3 hover:border-primary/40 transition-colors font-mono text-center">
+                  <span class="text-primary text-sm font-semibold">{tech}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
@@ -310,8 +331,7 @@ function getMediaDetails(url: string) {
               const colSpanClass = isFeatured ? "md:col-span-2" : "md:col-span-1";
               
               return (
-                <div class={`relative group flex flex-col ${colSpanClass}`}>
-                  <div class="absolute -inset-0.5 bg-gradient-to-r from-primary/30 to-accent/30 blur opacity-0 group-hover:opacity-100 transition duration-500 rounded-xl"></div>
+                <div class={`relative flex flex-col ${colSpanClass}`}>
                   <div class="relative bg-black rounded-xl overflow-hidden border border-neutral/50 shadow-sm flex flex-col flex-grow">
                     <div class="bg-neutral/20 px-3 py-1.5 text-[10px] border-b border-neutral/50 flex items-center justify-between">
                        <div class="flex space-x-1.5">
