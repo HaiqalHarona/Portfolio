@@ -1,0 +1,281 @@
+---
+// src/pages/contact.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout sideBarActiveItemID="contact" currentPath="/contact" title="Contact">
+  <div class="max-w-4xl mx-auto px-4 font-mono mb-20">
+    <!-- Page Header -->
+    <div class="mt-12 mb-10 boot-sequence" style="--delay: 0ms;">
+      <h1 class="text-4xl font-bold text-primary mb-2 flex items-center">
+        ./ping.sh<span id="main-cursor" class="ml-1 inline-block w-3 h-8 bg-primary"></span>
+      </h1>
+      <p class="text-lg opacity-80 text-secondary">Establish a connection with the host.</p>
+    </div>
+
+    <!-- Terminal Ping Output -->
+    <div class="border border-neutral bg-[#0a0a0a] mb-8 text-sm shadow-[0_0_15px_rgba(34,211,238,0.05)] stdout-container">
+      <div class="bg-neutral/40 px-3 py-1.5 text-xs text-base-content/50 border-b border-neutral flex items-center">
+        <div class="flex space-x-1.5 mr-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F56]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-[#27C93F]"></div>
+        </div>
+        <span>terminal :: ping -c 4 haronahaiqal@gmail.com</span>
+      </div>
+      <div class="p-6 md:p-8 space-y-2 text-xs md:text-sm">
+        <p class="opacity-90 leading-relaxed text-base-content mb-4">
+          <span class="text-accent font-bold mr-2 terminal-prompt">guest@haiqal:~#</span>
+          <span class="stdout-line">ping -c 4 haronahaiqal@gmail.com</span>
+        </p>
+        <p class="opacity-90 text-success stdout-line">PING haronahaiqal@gmail.com (100.121.200.75) 56(84) bytes of data.</p>
+        <p class="opacity-90 text-base-content/85 stdout-line">64 bytes from haronahaiqal@gmail.com: icmp_seq=1 ttl=64 time=0.035 ms</p>
+        <p class="opacity-90 text-base-content/85 stdout-line">64 bytes from haronahaiqal@gmail.com: icmp_seq=2 ttl=64 time=0.042 ms</p>
+        <p class="opacity-90 text-base-content/85 stdout-line">64 bytes from haronahaiqal@gmail.com: icmp_seq=3 ttl=64 time=0.038 ms</p>
+        <p class="opacity-90 text-base-content/85 stdout-line">64 bytes from haronahaiqal@gmail.com: icmp_seq=4 ttl=64 time=0.040 ms</p>
+        <p class="opacity-90 text-success stdout-line mt-3">--- haronahaiqal@gmail.com ping statistics ---</p>
+        <p class="opacity-90 text-base-content/80 stdout-line">4 packets transmitted, 4 received, 0% packet loss, time 3004ms</p>
+        <p class="opacity-90 text-base-content/80 stdout-line">rtt min/avg/max/mdev = 0.035/0.038/0.042/0.003 ms</p>
+        <p class="opacity-90 text-primary font-bold stdout-line mt-4">> Host is reachable. Connection active.</p>
+      </div>
+    </div>
+
+    <!-- Contact Form (nano style) -->
+    <div class="border border-neutral bg-[#0a0a0a] rounded-xl overflow-hidden shadow-[0_0_15px_rgba(34,211,238,0.05)] boot-sequence mb-8" style="--delay: 300ms;">
+      <div class="bg-neutral/40 px-4 py-2 text-xs text-base-content/50 border-b border-neutral flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-primary/80"></span>
+          <span class="font-bold tracking-tight">nano message_payload.json</span>
+        </div>
+        <span class="text-[10px] text-success/80 font-bold">● WRITABLE</span>
+      </div>
+      
+      <form id="contact-form" class="p-6 md:p-8 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Name Input -->
+          <div>
+            <label for="name" class="block text-accent font-bold text-xs uppercase tracking-wider mb-2">"sender_name" :</label>
+            <input 
+              type="text" 
+              id="name" 
+              required 
+              class="w-full bg-[#111] border border-neutral/40 rounded px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none text-base-content font-mono text-sm placeholder:text-neutral-content/20" 
+              placeholder='"Your Name"' 
+            />
+          </div>
+
+          <!-- Email Input -->
+          <div>
+            <label for="email" class="block text-accent font-bold text-xs uppercase tracking-wider mb-2">"sender_email" :</label>
+            <input 
+              type="email" 
+              id="email" 
+              required 
+              class="w-full bg-[#111] border border-neutral/40 rounded px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none text-base-content font-mono text-sm placeholder:text-neutral-content/20" 
+              placeholder='"your@email.com"' 
+            />
+          </div>
+        </div>
+
+        <!-- Subject Input -->
+        <div>
+          <label for="subject" class="block text-accent font-bold text-xs uppercase tracking-wider mb-2">"enquiry_subject" :</label>
+          <input 
+            type="text" 
+            id="subject" 
+            required 
+            class="w-full bg-[#111] border border-neutral/40 rounded px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none text-base-content font-mono text-sm placeholder:text-neutral-content/20" 
+            placeholder='"Project Inquiry, Job Opening, Hello, etc."' 
+          />
+        </div>
+
+        <!-- Message Input -->
+        <div>
+          <label for="message" class="block text-accent font-bold text-xs uppercase tracking-wider mb-2">"message_body" :</label>
+          <textarea 
+            id="message" 
+            required 
+            class="w-full bg-[#111] border border-neutral/40 rounded px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none text-base-content font-mono text-sm min-h-[150px] placeholder:text-neutral-content/20 resize-y" 
+            placeholder='"Type your message or project enquiry here..."'
+          ></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2 border-t border-neutral/20">
+          <p class="text-xs text-base-content/50">
+            * Submitting will print SMTP handshake details and redirect to your local email app.
+          </p>
+          <button 
+            type="submit" 
+            class="border border-primary text-primary px-6 py-2.5 hover:bg-primary/10 transition-all active:scale-95 font-bold text-sm w-full md:w-auto hover:shadow-[0_0_15px_rgba(255,112,150,0.2)]"
+          >
+            > ./send_payload.sh
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- SMTP Handshake Console (Hidden by default) -->
+    <div id="status-console" class="hidden border border-accent bg-[#0d070a] rounded-xl overflow-hidden shadow-[0_0_20px_rgba(168,85,247,0.1)] boot-sequence mb-12" style="--delay: 0ms;">
+      <div class="bg-neutral/40 px-4 py-2 text-xs text-base-content/50 border-b border-neutral flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-accent animate-pulse"></span>
+          <span>smtp_handshake.log</span>
+        </div>
+        <button id="close-console-btn" class="text-neutral-content hover:text-white font-bold text-sm px-1.5 hover:bg-neutral/20 rounded">×</button>
+      </div>
+      <div class="p-6 md:p-8 space-y-2 text-xs md:text-sm">
+        <p class="text-accent font-bold">> ./smtp_handshake.sh --target=haronahaiqal@gmail.com</p>
+        <p class="text-success select-none">Connecting to smtp.gmail.com:587... [CONNECTED]</p>
+        <p class="text-base-content/70 select-none">EHLO portfolio.local</p>
+        <p class="text-base-content/70 select-none">250-smtp.gmail.com at your service</p>
+        <p class="text-base-content/70 select-none">MAIL FROM: &lt;<span id="log-email" class="text-primary font-bold"></span>&gt;</p>
+        <p class="text-base-content/70 select-none">RCPT TO: &lt;haronahaiqal@gmail.com&gt;</p>
+        <p class="text-base-content/70 select-none">DATA</p>
+        <p class="text-success font-bold mt-2">✔ Redirecting payload to your local mail client...</p>
+        
+        <div class="border border-neutral/50 bg-black/40 p-4 mt-4 rounded space-y-2 text-xs md:text-sm">
+          <p class="text-warning font-bold">💡 Having trouble? If your mail app didn't open automatically, send a manual email:</p>
+          <p class="text-base-content/90"><strong>To:</strong> <span class="text-success select-all font-bold">haronahaiqal@gmail.com</span></p>
+          <p class="text-base-content/90"><strong>Subject:</strong> <span id="log-subject" class="text-success font-bold"></span></p>
+          <p class="text-base-content/90"><strong>Body:</strong></p>
+          <pre id="log-body" class="bg-[#111] p-3 border border-neutral/30 rounded text-base-content/85 overflow-x-auto whitespace-pre-wrap select-all font-mono"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  document.addEventListener('astro:page-load', () => {
+    // 1. Terminal stdout Gen Animation Logic
+    const stdoutObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('executed')) {
+          entry.target.classList.add('executed'); 
+          
+          const lines = entry.target.querySelectorAll('.stdout-line');
+          let delay = 0;
+          
+          lines.forEach((line, index) => {
+            setTimeout(() => {
+              if (index > 0) lines[index - 1].classList.remove('printing');
+              line.classList.add('printed', 'printing');
+              
+              if (index === lines.length - 1) {
+                setTimeout(() => {
+                  line.classList.remove('printing');
+                  line.classList.add('finished'); 
+                }, 800);
+              }
+            }, delay);
+            // Randomize typing speed for realism
+            delay += Math.floor(Math.random() * 80) + 20; 
+          });
+        }
+      });
+    }, { rootMargin: "0px 0px -10% 0px" });
+
+    document.querySelectorAll('.stdout-container').forEach(container => {
+      stdoutObserver.observe(container);
+    });
+
+    // 2. Form Submission Handler
+    const form = document.getElementById('contact-form');
+    const statusConsole = document.getElementById('status-console');
+    const closeConsoleBtn = document.getElementById('close-console-btn');
+    
+    if (form && statusConsole) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const nameVal = document.getElementById('name').value.trim();
+        const emailVal = document.getElementById('email').value.trim();
+        const subjectVal = document.getElementById('subject').value.trim();
+        const messageVal = document.getElementById('message').value.trim();
+        
+        // Update debug log values
+        document.getElementById('log-email').textContent = emailVal;
+        document.getElementById('log-subject').textContent = subjectVal;
+        
+        const bodyContent = `From: ${nameVal} <${emailVal}>\n\nMessage:\n${messageVal}`;
+        document.getElementById('log-body').textContent = bodyContent;
+        
+        // Show console output
+        statusConsole.classList.remove('hidden');
+        statusConsole.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Construct mailto url and redirect
+        const mailtoUrl = `mailto:haronahaiqal@gmail.com?subject=${encodeURIComponent(subjectVal)}&body=${encodeURIComponent(bodyContent)}`;
+        setTimeout(() => {
+          window.location.href = mailtoUrl;
+        }, 800);
+      });
+    }
+    
+    if (closeConsoleBtn && statusConsole) {
+      closeConsoleBtn.addEventListener('click', () => {
+        statusConsole.classList.add('hidden');
+      });
+    }
+  });
+</script>
+
+<style>
+  /* Standard terminal blink */
+  @keyframes terminal-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  #main-cursor {
+    animation: terminal-blink 1s step-end infinite;
+  }
+
+  .boot-sequence {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-up 0.6s ease-out forwards;
+    animation-delay: var(--delay);
+  }
+  @keyframes fade-up {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- Terminal Execution Styles --- */
+  .stdout-container:not(.executed) .terminal-prompt::after {
+    content: '█';
+    display: inline-block;
+    margin-left: 8px;
+    color: currentColor;
+    animation: terminal-blink 1s step-end infinite;
+    vertical-align: baseline;
+  }
+
+  .stdout-line {
+    opacity: 0;
+    visibility: hidden;
+  }
+  
+  .stdout-line.printed {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .stdout-line.printing::after {
+    content: '█';
+    display: inline-block;
+    margin-left: 6px;
+    color: currentColor;
+    vertical-align: baseline;
+  }
+
+  .stdout-line.finished::after {
+    content: '█';
+    display: inline-block;
+    margin-left: 6px;
+    color: currentColor;
+    animation: terminal-blink 1s step-end infinite;
+    vertical-align: baseline;
+  }
+</style>
