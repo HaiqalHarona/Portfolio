@@ -1,52 +1,15 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import HorizontalCard from "../components/HorizontalCard.astro";
 import { pb } from "../lib/pocketbase";
 import createSlug from "../lib/createSlug";
 
-let projects: any[] = [];
-try {
-  projects = await pb.collection("projects").getFullList({
-    sort: "-is_featured,title",
-  });
-} catch (e) {
-  console.error("Failed to fetch projects from PocketBase:", e);
-}
-
-const personalAndFun = projects.filter(p => p.project_type === "personal" || p.project_type === "forfun");
-const schoolProjects = projects.filter(p => p.project_type === "school");
-
 let projectSummaries: any[] = [];
 try {
-  projectSummaries = await pb.collection("project_summary").getFullList();
+  projectSummaries = await pb.collection("project_summary").getFullList({
+    expand: "project",
+  });
 } catch (e) {
   console.error("Failed to fetch project_summary from PocketBase:", e);
-}
-
-function getTechStackArray(tech_stack: any): string[] {
-  if (!tech_stack) return [];
-  if (Array.isArray(tech_stack)) return tech_stack;
-  if (typeof tech_stack === "object" && tech_stack !== null) {
-    return Object.entries(tech_stack).map(([key, val]) => `${key}: ${val}`);
-  }
-  if (typeof tech_stack === "string") {
-    try {
-      const parsed = JSON.parse(tech_stack);
-      if (Array.isArray(parsed)) return parsed;
-      if (typeof parsed === "object" && parsed !== null) {
-        return Object.entries(parsed).map(([key, val]) => `${key}: ${val}`);
-      }
-    } catch {
-      try {
-        const parsed = JSON.parse(tech_stack.replace(/'/g, '"'));
-        if (Array.isArray(parsed)) return parsed;
-        if (typeof parsed === "object" && parsed !== null) {
-          return Object.entries(parsed).map(([key, val]) => `${key}: ${val}`);
-        }
-      } catch {}
-    }
-  }
-  return [String(tech_stack)];
 }
 ---
 
@@ -57,156 +20,10 @@ function getTechStackArray(tech_stack: any): string[] {
 
     <div class="border-l border-neutral/30 ml-4 pl-4 sm:ml-6 sm:pl-6 space-y-12">
       
-      <!-- Personal Projects -->
-      <div>
-        <div class="mb-4 flex items-center gap-1.5">
-          <span class="text-secondary font-bold text-lg sm:text-xl">"personal_projects"</span>
-          <span class="text-base-content text-lg">:</span>
-          <span class="text-yellow-500 font-bold text-lg">[</span>
-        </div>
-
-        <div class="border-l border-neutral/20 ml-4 pl-4 sm:ml-6 sm:pl-6 space-y-8">
-          {personalAndFun.length === 0 ? (
-            <p class="text-base-content/40 italic font-mono">null,</p>
-          ) : (
-            personalAndFun.map((project, index) => {
-              const techStack = getTechStackArray(project.tech_stack);
-              return (
-                <div class="relative group">
-                  {/* Opening brace for project object */}
-                  <div class="text-yellow-500/70 mb-2 flex items-center gap-2">
-                    <span>{`{`}</span>
-                    <span class="text-[10px] text-accent/50 tracking-widest uppercase">// project_details</span>
-                  </div>
-                  
-                  {/* Nested JSON Metadata Preview */}
-                  <div class="pl-4 border-l border-neutral/20 mb-3 space-y-1 text-xs opacity-75 select-none">
-                    <div>
-                      <span class="text-secondary">"title"</span>: <span class="text-success">"{project.title}"</span>,
-                    </div>
-                    {techStack.length > 0 && (
-                      <div class="space-y-0.5">
-                        <div>
-                          <span class="text-secondary">"tech_stack"</span>: <span class="text-yellow-500">[</span>
-                        </div>
-                        <div class="pl-4 border-l border-neutral/10">
-                          {techStack.map((tech, idx) => (
-                            <div>
-                              <span class="text-success">"{tech}"</span>
-                              {idx < techStack.length - 1 && <span class="text-base-content/40">,</span>}
-                            </div>
-                          ))}
-                        </div>
-                        <div>
-                          <span class="text-yellow-500">]</span>,
-                        </div>
-                      </div>
-                    )}
-                    <div>
-                      <span class="text-secondary">"preview"</span>: <span class="text-yellow-500">{`{`}</span>
-                    </div>
-                  </div>
-
-                  {/* Rich Preview Card */}
-                  <div class="ml-4 transition-transform group-hover:-translate-y-1 duration-300 bg-base-200/40 rounded-xl p-3 border border-neutral/30 shadow-sm hover:shadow-md hover:border-primary/40">
-                    <HorizontalCard
-                      title={project.title}
-                      img={project.cover_image_url || (project.cover_image ? (project.cover_image.startsWith("http://") || project.cover_image.startsWith("https://") ? project.cover_image : pb.files.getUrl(project, project.cover_image)) : undefined)}
-                      desc={project.description}
-                      url={`/projects/${createSlug(project.title, project.id)}`}
-                      badge={project.is_featured ? "Featured" : undefined}
-                    />
-                  </div>
-
-                  {/* Closing brace for project object */}
-                  <div class="text-yellow-500/70 mt-2">
-                    {`}`}<span class="text-base-content/50">{`}`}</span>{index < personalAndFun.length - 1 ? ',' : ''}
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-        <div class="text-yellow-500 font-bold text-lg mt-4">],</div>
-      </div>
-
-      <!-- School Projects -->
-      <div>
-        <div class="mb-4 flex items-center gap-1.5">
-          <span class="text-secondary font-bold text-lg sm:text-xl">"school_projects"</span>
-          <span class="text-base-content text-lg">:</span>
-          <span class="text-yellow-500 font-bold text-lg">[</span>
-        </div>
-
-        <div class="border-l border-neutral/20 ml-4 pl-4 sm:ml-6 sm:pl-6 space-y-8">
-          {schoolProjects.length === 0 ? (
-            <p class="text-base-content/40 italic font-mono">null,</p>
-          ) : (
-            schoolProjects.map((project, index) => {
-              const techStack = getTechStackArray(project.tech_stack);
-              return (
-                <div class="relative group">
-                  {/* Opening brace for project object */}
-                  <div class="text-yellow-500/70 mb-2 flex items-center gap-2">
-                    <span>{`{`}</span>
-                    <span class="text-[10px] text-accent/50 tracking-widest uppercase">// project_details</span>
-                  </div>
-                  
-                  {/* Nested JSON Metadata Preview */}
-                  <div class="pl-4 border-l border-neutral/20 mb-3 space-y-1 text-xs opacity-75 select-none">
-                    <div>
-                      <span class="text-secondary">"title"</span>: <span class="text-success">"{project.title}"</span>,
-                    </div>
-                    {techStack.length > 0 && (
-                      <div class="space-y-0.5">
-                        <div>
-                          <span class="text-secondary">"tech_stack"</span>: <span class="text-yellow-500">[</span>
-                        </div>
-                        <div class="pl-4 border-l border-neutral/10">
-                          {techStack.map((tech, idx) => (
-                            <div>
-                              <span class="text-success">"{tech}"</span>
-                              {idx < techStack.length - 1 && <span class="text-base-content/40">,</span>}
-                            </div>
-                          ))}
-                        </div>
-                        <div>
-                          <span class="text-yellow-500">]</span>,
-                        </div>
-                      </div>
-                    )}
-                    <div>
-                      <span class="text-secondary">"preview"</span>: <span class="text-yellow-500">{`{`}</span>
-                    </div>
-                  </div>
-
-                  {/* Rich Preview Card */}
-                  <div class="ml-4 transition-transform group-hover:-translate-y-1 duration-300 bg-base-200/40 rounded-xl p-3 border border-neutral/30 shadow-sm hover:shadow-md hover:border-primary/40">
-                    <HorizontalCard
-                      title={project.title}
-                      img={project.cover_image_url || (project.cover_image ? (project.cover_image.startsWith("http://") || project.cover_image.startsWith("https://") ? project.cover_image : pb.files.getUrl(project, project.cover_image)) : undefined)}
-                      desc={project.description}
-                      url={`/projects/${createSlug(project.title, project.id)}`}
-                      badge={project.is_featured ? "Featured" : undefined}
-                    />
-                  </div>
-
-                  {/* Closing brace for project object */}
-                  <div class="text-yellow-500/70 mt-2">
-                    {`}`}<span class="text-base-content/50">{`}`}</span>{index < schoolProjects.length - 1 ? ',' : ''}
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
-        <div class="text-yellow-500 font-bold text-lg mt-4">],</div>
-      </div>
-
       <!-- Project Summaries -->
       <div>
         <div class="mb-4 flex items-center gap-1.5">
-          <span class="text-secondary font-bold text-lg sm:text-xl">"project_summaries"</span>
+          <span class="text-secondary font-bold text-lg sm:text-xl">"projects"</span>
           <span class="text-base-content text-lg">:</span>
           <span class="text-yellow-500 font-bold text-lg">[</span>
         </div>
@@ -217,6 +34,9 @@ function getTechStackArray(tech_stack: any): string[] {
           ) : (
             projectSummaries.map((summary, index) => {
               const stack = summary.stack || [];
+              const relatedProject = summary.expand?.project;
+              const projectUrl = relatedProject ? `/projects/${createSlug(relatedProject.title, relatedProject.id)}` : null;
+
               return (
                 <div class="relative group">
                   <div class="text-yellow-500/70 mb-2 flex items-center gap-2">
@@ -251,6 +71,11 @@ function getTechStackArray(tech_stack: any): string[] {
                         <span class="text-secondary">"github"</span>: <span class="text-success">"{summary.github}"</span>,
                       </div>
                     )}
+                    {projectUrl && (
+                      <div>
+                        <span class="text-secondary">"project_page"</span>: <span class="text-success">"{projectUrl}"</span>,
+                      </div>
+                    )}
                     <div>
                       <span class="text-secondary">"preview"</span>: <span class="text-yellow-500">{`{`}</span>
                     </div>
@@ -259,11 +84,18 @@ function getTechStackArray(tech_stack: any): string[] {
                   <div class="ml-4 transition-transform group-hover:-translate-y-1 duration-300 bg-base-200/40 rounded-xl p-5 border border-neutral/30 shadow-sm hover:shadow-md hover:border-primary/40">
                     <div class="flex justify-between items-start mb-2">
                       <h3 class="font-bold text-xl text-primary font-mono">{summary.title}</h3>
-                      {summary.github && (
-                        <a href={summary.github} target="_blank" class="badge badge-outline hover:bg-base-content hover:text-base-100 font-mono text-xs">
-                          GitHub ↗
-                        </a>
-                      )}
+                      <div class="flex gap-2">
+                        {projectUrl && (
+                          <a href={projectUrl} class="badge badge-primary font-mono text-xs hover:scale-105 transition-all">
+                            Details ↗
+                          </a>
+                        )}
+                        {summary.github && (
+                          <a href={summary.github} target="_blank" class="badge badge-outline hover:bg-base-content hover:text-base-100 font-mono text-xs">
+                            GitHub ↗
+                          </a>
+                        )}
+                      </div>
                     </div>
                     <p class="text-base-content/80 mb-4 font-mono text-sm">{summary.description}</p>
                     {stack.length > 0 && (

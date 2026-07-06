@@ -74,6 +74,20 @@
               "required": false,
               "system": false,
               "type": "url"
+            },
+            {
+              "cascadeDelete": false,
+              "collectionId": "projects_collection123",
+              "hidden": false,
+              "id": "field_summary_project",
+              "maxSelect": 1,
+              "minSelect": 0,
+              "name": "project",
+              "presentable": false,
+              "primaryKey": false,
+              "required": false,
+              "system": false,
+              "type": "relation"
             }
           ]
         }
