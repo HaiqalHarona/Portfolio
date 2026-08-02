@@ -1,16 +1,14 @@
 services:
   astro-webserver:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - POCKETBASE_URL=${POCKETBASE_URL:-http://192.168.18.118:8090}
-    image: portfolio:local
+    image: nginx:alpine
     container_name: astro-webserver
     restart: always
+    volumes:
+      - /home/nino/Portfolio:/app:ro
+      - /home/nino/Portfolio/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
-      - portfolio_network
+      - portfolio_net
 
 networks:
-  portfolio_network:
+  portfolio_net:
     external: true
