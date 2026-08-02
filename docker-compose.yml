@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       args:
         - POCKETBASE_URL=http://192.168.18.118:8090
-    image: portfolio:local
+    pull_policy: build
     container_name: astro-webserver
     restart: always
     networks:
