@@ -1,0 +1,12 @@
+services:
+  astro-webserver:
+    image: ghcr.io/haiqalharona/portfolio:latest
+    container_name: astro-webserver
+    restart: always
+    pull_policy: always
+    networks:
+      - portfolio_network
+
+networks:
+  portfolio_network:
+    external: true
