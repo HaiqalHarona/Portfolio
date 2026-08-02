@@ -1,9 +1,13 @@
 services:
   astro-webserver:
-    image: ghcr.io/haiqalharona/portfolio:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - POCKETBASE_URL=http://192.168.18.118:8090
+    image: portfolio:local
     container_name: astro-webserver
     restart: always
-    pull_policy: always
     networks:
       - portfolio_network
 

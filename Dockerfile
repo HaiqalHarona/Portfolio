@@ -9,6 +9,10 @@ RUN npm install -g pnpm
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
+# Pass environment variables for build-time static generation
+ARG POCKETBASE_URL
+ENV POCKETBASE_URL=$POCKETBASE_URL
+
 # Copy source files and execute production build
 COPY . .
 RUN pnpm run build
