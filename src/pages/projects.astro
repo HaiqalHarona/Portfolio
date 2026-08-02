@@ -7,6 +7,7 @@ let projectSummaries: any[] = [];
 try {
   projectSummaries = await pb.collection("project_summary").getFullList({
     expand: "project",
+    requestKey: null,
   });
 } catch (e) {
   console.error("Failed to fetch project_summary from PocketBase:", e);

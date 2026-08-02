@@ -5,14 +5,14 @@ import createSlug from "../../lib/createSlug";
 
 export async function getStaticPaths() {
   try {
-    const projects = await pb.collection("projects").getFullList();
+    const projects = await pb.collection("projects").getFullList({ requestKey: null });
     return projects.map((project) => ({
       params: { slug: createSlug(project.title, project.id) },
       props: { project },
     }));
   } catch (e) {
     console.error("Failed to generate static paths for projects:", e);
-    return [];
+    throw e;
   }
 }
 
