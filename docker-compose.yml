@@ -4,8 +4,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - POCKETBASE_URL=http://192.168.18.118:8090
-    pull_policy: build
+        - POCKETBASE_URL=${POCKETBASE_URL:-http://192.168.18.118:8090}
+    image: portfolio:local
     container_name: astro-webserver
     restart: always
     networks:
